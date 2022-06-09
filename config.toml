@@ -1,3 +1,4 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://sevorg.org'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+theme = 'mini'
+title = 'This is Being Known'

@@ -2,9 +2,25 @@ html[theme='dark-mode'] {
   filter: invert(1) hue-rotate(180deg);
 }
 
+@font-face {
+    src: url('../fonts/WarblerText-Regular.woff2') format("woff2"),
+         url('../fonts/WarblerText-Regular.woff') format("woff");
+    font-family: 'Warbler Text Web';
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    src: url('../fonts/WarblerText-Italic.woff2') format("woff2"),
+         url('../fonts/WarblerText-Italic.woff') format("woff");
+    font-family: 'Warbler Text Web';
+    font-style: italic;
+    font-weight: 400;
+}
+
 body {
   line-height: 1;
-  font: normal 15px/1.5em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font: normal 15px/1.5em 'Warbler Text Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #404040;
   line-height: 1.75;
   letter-spacing: 0.008em;

@@ -1,7 +1,7 @@
 ---
 title: "Quantification"
 date: 2021-10-03T11:36:03-04:00
-draft: true
+draft: false
 summary: 'I spent my late 20s and early 30s thinking I was a hateful person, at least some days'
 ---
 I spent my late 20s and early 30s thinking I was a hateful person, at least some days. On those days, everything was pointless, nothing was amusing, and I can only imagine what it was like to be around me.

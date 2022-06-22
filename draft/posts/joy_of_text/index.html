@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Joy of Text | This is Being Known</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="Own your tools">
+<meta name="generator" content="Hugo 0.98.0" />
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/draft/css/style.css">
+
+
+
+<link rel="shortcut icon" href="/draft/images/favicon.ico" type="image/x-icon" />
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	<a href="/draft/">Home</a>
+	<a href="/draft/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Joy of Text</h1>
+
+    <div class="tip">
+        <time datetime="2021-10-12 18:03:33 -0400 EDT">Oct 12, 2021</time>
+    </div>
+
+    
+    
+
+
+    <div class="content">
+      <h2 id="why">Why <a href="#why" class="anchor">#</a></h2><p>Text goes back to the beginning of computing. While it&rsquo;s not the first way we communicated with computers, it showed up as soon as we had the capabilities. Text efficiently conveys information to people and requires minimal capabilities to produce and display.</p>
+<p>That combination, information density and ease of creation, make it an ideal programming substrate. It enables the creation of clear, powerful interfaces while not being so complex as to discourage the programmer from modifying or creating their own interfaces. Using text for display encourages tools that the programmer can truly own, customizing and enhancing them as they learn.</p>
+<p>This remixes the Unix philosophy. It keeps the notions of comprehensible programs that work well together to allow for complete user control and comprehension of the environment. It doesn&rsquo;t slavishly keep the notion of text streams as the API between programs. In this philosophy, text is for humans and processes can communicate however&rsquo;s best for them.</p>
+<h2 id="philosophy">Philosophy <a href="#philosophy" class="anchor">#</a></h2><ul>
+<li>
+<p>System is split into an &ldquo;outpost&rdquo; where computation happens and text is produced and a &ldquo;hub&rdquo; where the text is shown and input is produced to send to the outpost</p>
+</li>
+<li>
+<p>Base outpost capabilities are shell, editor, text search, file find, fuzzy search, scrollback</p>
+</li>
+<li>
+<p>Base hub capabilities are modern terminal with unicode and programmer fonts, clipboard, browser driving via URL, file transfer, multiple terminal panes</p>
+</li>
+<li>
+<p>Base capabilities are testable for upgrades and new outposts</p>
+</li>
+<li>
+<p>Text as a medium means the path from hub to outpost doesn&rsquo;t affect its capabilities: local, SSH, Docker, and Docker through SSH are equal</p>
+</li>
+<li>
+<p>Able to work immediately in a new outpost. Creating a session sets up all the base capabilities. Even if set up isn&rsquo;t complete, you can invoke commands and they&rsquo;ll block and execute when set up does complete</p>
+</li>
+<li>
+<p>Opening a new pane in the hub keeps the outpost context of the pane it was openend from e.g. if I open a pane while in a directory in a Docker container through an SSH session, the new pane starts in that directory</p>
+</li>
+<li>
+<p>Own the tools, more skill with the editor or base system compounds over time</p>
+</li>
+<li>
+<p>Want to capture some notion of small tools and clear relations making the system debuggable and comprehensible. Is that true? How can we make it inherent in the design of the system? Want to avoid the IDE trap of tools that work differently or only inside of it</p>
+<ul>
+<li>Maybe the <a href="https://en.wikipedia.org/wiki/Unix_philosophy#Doug_McIlroy_on_Unix_programming" target="_blank" rel="noopener">McIllroy summarization of the Unix philosophy</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+- Though not really as we want text as a human interface, not a program to program interface. Interprocess should use structured data</p>
+</blockquote>
+<ul>
+<li>Want to bake in a notion of simplicity that text allows on both sides of the system</li>
+</ul>
+<h2 id="shenandoah-notes">Shenandoah Notes <a href="#shenandoah-notes" class="anchor">#</a></h2><p>Terminal stream makes an ideal separation between display and computation</p>
+<p>Simplicity of text for display removes requirements both on the computation and display sides. The bar is low.</p>
+<p>An iPad with an external keyboard can be as effective as a laptop.</p>
+<p>Drilling through the terminal stream to the display OS with escapes allows the surrounding chrome to be used: clipboard, file transfer, URL display, bitmap display.</p>
+<p>Webapps require so much more of the display in the browser. Their output is much less composable due to the complexity of the app.</p>
+<p>Location independent executables let us make the computation environment equally functional with only copy facilities for bootstrap. Determine the architecture with a first command, and then copy over appropriate tools.</p>
+
+    </div>
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+</footer>
+
+
+
+  </body>
+</html>

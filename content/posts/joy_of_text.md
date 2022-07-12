@@ -25,9 +25,13 @@ By controlling everything, the IDE is able integrate everything and produce a de
 The requirement for that is steep: all aspects of the project must be understood by the IDE in the forms it expects.
 
 A text workshop doesn't need that depth of integration.
-Editing, [file finding](https://github.com/junegunn/fzf), and [search](https://github.com/BurntSushi/ripgrep)  work without integration.
+Editing, [file finding][fzf], and [search][ripgrep] work without integration.
 The same command-line based build tooling that continuous integration uses can be used in the workshop.
-Using the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) it can take have the same deep code understanding that IDEs have.
+Using the [Language Server Protocol][] it can take have the same deep code understanding that IDEs have.
+
+[fzf]: https://github.com/junegunn/fzf
+[ripgrep]: https://github.com/BurntSushi/ripgrep
+[Language Server Protocol]: https://microsoft.github.io/language-server-protocol/
 
 Importantly, it can do this piecemeal.
 Rather than having to consume the whole project, it's functional with no specific knowledge of the project and can add independent functionality as it's useful.

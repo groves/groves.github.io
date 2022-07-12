@@ -38,6 +38,23 @@ Rather than having to consume the whole project, it's functional with no specifi
 The below sections imagine tools that allow that stacking of functionality in this workshop style.
 
 ## Context visible and navigable automatically
+A workbench is the heart of a workshop.
+The piece being worked on is brought to the bench along with all the tools necessary for the work.
+In text-centric development, the terminal is our workbench.
+
+[Modern terminal emulators][kitty] allow the [creation and layout][kitty layout] of multiple terminal panes in a single OS window.
+[Terminal multiplexers][tmux] allow the same thing in any terminal emulator that doesn't support it natively.
+Using multiple terminal panes managed by either of these systems lets us bring multiple text-based tools to a shared "workbench".
+
+[kitty]: https://sw.kovidgoyal.net/kitty/
+[kitty layout]: https://sw.kovidgoyal.net/kitty/overview/#layouts
+[tmux]: https://github.com/tmux/tmux/wiki
+
+With this workbench approach, you can have your editor in one pane, a shell for running the compiler in a second, and a script running the server you're developing showing its logs.
+Through the [scripting exposed by the terminal][kitty scripting] you can bind a keystroke to [rexecute the last command run in a shell][reterm] without leaving your editor.
+
+[kitty scripting]: https://sw.kovidgoyal.net/kitty/kittens/custom/#using-kittens-to-script-kitty-without-any-terminal-ui
+[reterm]: https://github.com/groves/catherd/blob/6c4c98a5289d56f7fad55f060a03929ede35a3b3/reterm.py#L39
 
 Open multiple editors for addresses in a list, move back and forth
 Move to editor or shell for project/branch/machine/file/symbol

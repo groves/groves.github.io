@@ -6,7 +6,14 @@ summary: 'This is being known'
 ---
 The price of choosing an inscrutable name for this blog -- This is Being Known -- is that I must explain it. I'm going to be sincere in this post to try to do that. There may be more uncomfortable things I could do, but I haven't felt them yet.
 
-"This is Being Known" summarizes a recent change in my way of looking at the world. I started meditating indifferently several years ago. I can't say precisely why. I worked at [a company adding meditation to its products](https://www.fitbit.com/) and it was in the air. I followed along with an app, and that got me settled into a daily 10 minute practice. It helped with not getting too worked up about all the parts of my life I couldn't control, but it didn't change my worldview.
+"This is Being Known" summarizes a recent change in my way of looking at the world.
+I started meditating indifferently several years ago.
+I can't say precisely why.
+I worked at [a company adding meditation to its products][fitbit] and it was in the air.
+I followed along with an app, and that got me settled into a daily 10 minute practice.
+It helped with not getting too worked up about all the parts of my life I couldn't control, but it didn't change my worldview.
+
+[fitbit]: https://www.fitbit.com/
 
 This continued for a few years. I wasn't getting much more out of the app-directed meditation, but I was starting to get sense that there could be more there if I put more into it. Unlike with almost anything else in my life, rather than methodically exploring everything related to the subject, I signed up for a four day meditation retreat. I'd gotten the impression that a retreat was a decent way to deepen your practice and signed up without thinking about it much more than that.
 

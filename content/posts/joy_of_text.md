@@ -1,6 +1,6 @@
 ---
 title: "Joy of Text"
-date: 2021-10-12T18:03:33-04:00
+date: 2021-10-12
 draft: true
 summary: 'Own your tools'
 ---
@@ -43,23 +43,29 @@ The piece being worked on is brought to the bench along with all the tools neces
 In text-centric development, the terminal is our workbench.
 
 Terminals have a [venerable history][vt history] and a [midden of features][control sequences] to attest to that.
-We don't need to concern ourselves with the majority of those.
-For our purposes, we need terminals to support two kinds of programs:
+We don't need the majority of those.
+For our purposes, we need terminals to support two extremes in types of programs:
 1. Ones that emit a stream of text that the terminal draws in a scrolling pane
-2. Ones that draw characters at x, y coordinates they specify, taking over the pane
+2. Ones that draw characters at x, y coordinates the program specifies, taking over the pane
 
 [vt history]: https://vt100.net/dec/vt_history
 [control sequences]: https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
 
-The first contains programs like the shell that take input and run commands and the simplest programs that send their results to standard output.
-The [first program created][hello world] to learn a language falls in this category.
+The first type contains programs that immediately send their results to standard output.
+Language manuals often start with [a simple program of this type][hello world].
+That simplicity makes the type perpetually usefel, as it allows quick creation of tools.
+Despite that ease, programs doing a single task like a compiler or server often don't need more user interface features than this.
+They can even [precisely style their output][rich] without giving up the ease of creation.
+
 
 [hello world]: http://helloworldcollection.de/
+[rich]: https://github.com/Textualize/rich#readme
 
-The second contains programs that draw a full user interface and update it over time.
-Editors like Vim and Emacs and tools like top fall in this category.
+The second type contains programs that draw a full user interface and update it over time.
+We need it for our editor, be it Vim, Emacs, or whatever you like.
+By using the terminal's rows and columns of characters as an updatable canvas, we can interactively edit files.
 
-With that spread, we can create the simplest possible tools to use on our workbench and combine them with ones with fully-featured user interfaces.
+## Bringing multiple tools to the workbench
 
 Beyond supporting these kinds of text tools, we also need to be able to use multiple tools simultaneously.
 [Modern terminal emulators][kitty] allow the [creation and layout][kitty layout] of multiple terminal panes in a single OS window.
@@ -70,7 +76,7 @@ Using multiple terminal panes managed by either of these systems lets us bring m
 [kitty layout]: https://sw.kovidgoyal.net/kitty/overview/#layouts
 [tmux]: https://github.com/tmux/tmux/wiki
 
-With this workbench approach, we can have an ditor in one pane, a shell for running the compiler in a second, and a script running the server we're developing showing its logs in a third.
+With this workbench approach, we can have an editor in one pane, a shell for running the compiler in a second, and a script running the server we're developing showing its logs in a third.
 Through the [scripting exposed by the terminal][kitty scripting] we can bind a keystroke to [rexecute the last command run in a shell][reterm] without leaving our editor pane.
 
 [kitty scripting]: https://sw.kovidgoyal.net/kitty/kittens/custom/#using-kittens-to-script-kitty-without-any-terminal-ui
@@ -80,39 +86,51 @@ By using the terminal as our workbench, we create a uniform interface for manipu
 Everything is a rectangle of text and can be handled at a high-level by the interfaces of the terminal.
 This uniformity lets us build simple tools that can be combined at thes higher levels.
 
-## Context visible and navigable automatically
+## Using tools in concert
 
-That scripting goes from extracting the text in a pane,
+[That scripting][kitty scripting] goes from extracting the text in a pane,
 to [sending data back to the controlling terminal][OSC 7],
 to placing and creating panes based on that text and data.
-Because the system is entirely composed of text in panes, that scripting allows access and control over everything in the environment.
+Because the system is entirely composed of text in panes, it allows access and control over everything in the environment.
 
 [OSC 7]: https://wezfurlong.org/wezterm/shell-integration.html#osc-7-escape-sequence-to-set-the-working-directory
 
-For example, if tests are being run in one pane, we could run a script on the output of the command execution.
+For example, if our tests are being run in one pane, we could run a script on the output of the command execution.
 That script would know the directory and project type based on terminal control codes emitted by the shell.
 From the project type, it'd be able to map stack trace lines in a test failure to source files in the directory.
-It could then open an editor for the top three stack frames, showing the context of the failure through the stack.
+It could then open an editor pane for each of othe top three stack frames, showing the context of the failure through the stack.
 
-That style
-Open multiple editors for addresses in a list, move back and forth
-Move to editor or shell for project/branch/machine/file/symbol
-Opening a new pane in the hub keeps the outpost context of the pane it was openend from e.g. if I open a pane while in a directory in a Docker container through an SSH session, the new pane starts in that directory
 
-## Development is exploration
-Search for definitions and usages and files in the current project, both source an docs.
+## Bring your workbench to the execution environment
+Because it's been around since the early days, text as a medium works as a lowest common denominator of execution environments.
+Whether we're working on our local laptop, on a server through SSH, in a Docker container, or in a Docker container on a server through [Mosh][] over [Tailscale][], all the text tools run equally well.
+An iPad with an external keyboard can be as effective as a laptop to develop remotely.
 
-## Lists of lists
-Compilation failures, test failures, stack traces, search results, diff chunks are lists of addresses.
-They should be navigable and annotatable
+[mosh]: https://mosh.org/
+[tailscale]: https://tailscale.com/
 
-## Develop in the execution environment
-Text as a medium works at the LCD of environments: local, SSH, Docker, and Docker through SSH are equal
-An iPad with an external keyboard can be as effective as a laptop.
+If you define your workbench and all its tools with [Home Manager][] in [Nix][] you can package the tools for an arbitrary instruction set in an arbitrary format.
+Compile them for Arm processors as a Docker layer and place that on top of the container you want to run.
+Or [SCP the tools and their full dependencies][nix-copy-closure] to anything you can SSH into.
+
+[home manager]: https://github.com/nix-community/home-manager
+[nix]: https://nixos.org/explore.html
+[nix-copy-closure]: https://nixos.org/manual/nix/stable/command-ref/nix-copy-closure.html
+
+By being pure text, there are far fewer restrictions on where we can run our tools.
+That lets us run them in the most convenient place for the project instead of contorting the project to run alongside the tools.
 
 ## Blit when better
-Open a browser or image from Kitty hints and transfer. Docs, PRs, links
-Drilling through the terminal stream to the display OS with escapes allows the surrounding chrome to be used: clipboard, file transfer, URL display, bitmap display.
+While text can be pushed surprisingly far in conveying information, there are things that are clearer as an image.
+If we want to display an image from our workbench, [modern terminals enable that][kitty graphics].
+Because the data is being transmitted through the terminal stream, it doesn't matter what we have between our local environment and where the image data lives:
+as long as we can get text through, we can get the image data through.
+
+[kitty graphics]: https://sw.kovidgoyal.net/kitty/graphics-protocol/
+
+This terminal escape hatch works for arbitrary types of data.
+If the execution environment wants the local environment to open a URL or to transfer a file, it can request that.
+Drilling through the terminal stream to the local environment allows us to use all the surrounding chrome.
 
 # Why not VS Code
 - Ease of hacking

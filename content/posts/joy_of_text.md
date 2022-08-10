@@ -53,8 +53,8 @@ For our purposes, we need terminals to support two extremes in types of programs
 
 The first type contains programs that immediately send their results to standard output.
 Language manuals often start with [a simple program of this type][hello world].
-That simplicity makes the type perpetually usefel, as it allows quick creation of tools.
-Despite that ease, programs doing a single task like a compiler or server often don't need more user interface features than this.
+That simplicity makes the type perpetually useful, as it allows quick creation of tools.
+Despite that ease, single-task programs like a compiler or server often don't need more user interface features than this.
 They can even [precisely style their output][rich] without giving up the ease of creation.
 
 
@@ -62,8 +62,10 @@ They can even [precisely style their output][rich] without giving up the ease of
 [rich]: https://github.com/Textualize/rich#readme
 
 The second type contains programs that draw a full user interface and update it over time.
-We need it for our editor, be it Vim, Emacs, or whatever you like.
+We need it for our editor, be it Vim, Emacs, or [whatever you like][helix].
 By using the terminal's rows and columns of characters as an updatable canvas, we can interactively edit files.
+
+[helix]: https://helix-editor.com/
 
 ## Bringing multiple tools to the workbench
 
@@ -88,18 +90,18 @@ This uniformity lets us build simple tools that can be combined at thes higher l
 
 ## Using tools in concert
 
-[That scripting][kitty scripting] goes from extracting the text in a pane,
+[That scripting][kitty scripting] goes from [extracting the text in a pane][OSC 52],
 to [sending data back to the controlling terminal][OSC 7],
 to placing and creating panes based on that text and data.
 Because the system is entirely composed of text in panes, it allows access and control over everything in the environment.
 
+[OSC 52]: https://terminalguide.namepad.de/seq/osc-52/
 [OSC 7]: https://wezfurlong.org/wezterm/shell-integration.html#osc-7-escape-sequence-to-set-the-working-directory
 
 For example, if our tests are being run in one pane, we could run a script on the output of the command execution.
 That script would know the directory and project type based on terminal control codes emitted by the shell.
 From the project type, it'd be able to map stack trace lines in a test failure to source files in the directory.
-It could then open an editor pane for each of othe top three stack frames, showing the context of the failure through the stack.
-
+It could then open an editor pane for each of the top three stack frames, showing the context of the failure through the stack.
 
 ## Bring your workbench to the execution environment
 Because it's been around since the early days, text as a medium works as a lowest common denominator of execution environments.
@@ -133,5 +135,22 @@ If the execution environment wants the local environment to open a URL or to tra
 Drilling through the terminal stream to the local environment allows us to use all the surrounding chrome.
 
 # Why not VS Code
+
+[almost 75% of developers use VS Code][developer editor survey]
+
+[developer editor survey]: https://survey.stackoverflow.co/2022/#section-most-popular-technologies-integrated-development-environment
+
+In [this interview][changelog Vim episode], Gary Bernhardt talks about his 15 years of Vim use:
+
+[changelog Vim episode]: https://changelog.com/podcast/450#transcript-124
+
+> At the beginning of that time, TextMate was just becoming popular. 
+> Then it was Sublime Text was cool.
+> Then Atom was cool. Then VS Code was cool.
+> A lot of people switched between two of those, three of those, maybe all four of those, 
+> and that whole I was just getting better and better at Vim.
+> And you multiply that out by the length of a career, you use Vim for 40 years - 
+> you're gonna be so good at it by the end, and it's still gonna be totally relevant
+
 - Ease of hacking
 - Own the tools, more skill with the editor or base system compounds over time

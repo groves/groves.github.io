@@ -7,11 +7,11 @@ summary: 'Own your tools'
 
 Text goes back nearly to the beginning of computing.
 As soon as we could move past raw binary, we added it.
-Despite huge advances in what we can display, it has stuck around as a primary interface.
+Despite huge advances in what we can display, it's stuck around as a primary interface.
 It efficiently conveys information and requires minimal capabilities to produce and display.
 
 That combination, information density and ease of creation, make text an ideal software development substrate.
-It enables the creation of usable, powerful tools while not being so complex to discourage the developer from modifying them or creating their own.
+It enables the creation of usable, powerful tools while not being so complex as to discourage the developer from modifying them or creating their own.
 Using it for display encourages tools that the developer can truly own, customizing and enhancing them as they learn.
 
 # Imagining a software development workshop
@@ -71,12 +71,14 @@ By using the terminal's rows and columns of characters as an updatable canvas, w
 
 Beyond supporting these kinds of text tools, we also need to be able to use multiple tools simultaneously.
 [Modern terminal emulators][kitty] allow the [creation and layout][kitty layout] of multiple terminal panes in a single OS window.
-[Terminal multiplexers][tmux] allow the same thing in any terminal emulator that doesn't support it natively.
+[Terminal multiplexers][tmux] allow the same thing in terminal emulators that don't support it natively.
 Using multiple terminal panes managed by either of these systems lets us bring multiple text-based tools to a shared "workbench".
 
 [kitty]: https://sw.kovidgoyal.net/kitty/
 [kitty layout]: https://sw.kovidgoyal.net/kitty/overview/#layouts
 [tmux]: https://github.com/tmux/tmux/wiki
+
+(TKTK screenrecording of this in kitty)
 
 With this workbench approach, we can have an editor in one pane, a shell for running the compiler in a second, and a script running the server we're developing showing its logs in a third.
 Through the [scripting exposed by the terminal][kitty scripting] we can bind a keystroke to [rexecute the last command run in a shell][reterm] without leaving our editor pane.
@@ -86,7 +88,7 @@ Through the [scripting exposed by the terminal][kitty scripting] we can bind a k
 
 By using the terminal as our workbench, we create a uniform interface for manipulating our tools.
 Everything is a rectangle of text and can be handled at a high-level by the interfaces of the terminal.
-This uniformity lets us build simple tools that can be combined at thes higher levels.
+This uniformity lets us build simple tools that can be combined at these higher levels.
 
 ## Using tools in concert
 
@@ -136,21 +138,50 @@ Drilling through the terminal stream to the local environment allows us to use a
 
 # Why not VS Code
 
-[almost 75% of developers use VS Code][developer editor survey]
+In the latest Stack Overflow developer editor usage survey, 
+almost [75% of developers use VS Code][editor popularity survey] and 
+[81% of them love it][editor love survey].
+It can do everything described for the workbench above,
+including [bringing the editor to the execution environment][VS Code remote development].
 
-[developer editor survey]: https://survey.stackoverflow.co/2022/#section-most-popular-technologies-integrated-development-environment
+[editor popularity survey]: https://survey.stackoverflow.co/2022/#section-most-popular-technologies-integrated-development-environment
+[editor love survey]: https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-integrated-development-environment
+[VS Code remote development]: https://code.visualstudio.com/docs/remote/remote-overview
+
+Given its ubiquity and capabilities, why fight the tide of developer tooling to keep antiquated technology?
+For me, it's to have a chance of truly owning the tools I use, and through that finding joy in their use.
+
+[VS Code's src directory][VS Code src] has over 1 million lines of text in it.
+That's just the core editor, not counting the multitude of plugins that make it sing.
+It's built on Electron, which pulls in the complexity of the entire browser stack.
+
+[VS Code src]: https://github.com/microsoft/vscode/tree/main/src
+
+By contrast, [Helix], my preferred editor has 40 thousand lines of text in [its source directories][Helix GitHub].
+Kitty, my terminal of choice, has 80 thousand lines of text in [its source directory][Kitty GitHub].
+Their combined 120 thousand lines of text are an order of magnitude less than what's in VS Code,
+and probably two orders of magnitude when you include Electron and plugins.
+
+[Helix GitHub]: https://github.com/helix-editor/helix
+[Kitty GitHub]: https://github.com/kovidgoyal/kitty/tree/master/kitty
+
+These numbers aren't meant to be an absolute accounting of the complexity of these projects.
+Instead I think they serve as a proxy for the ease of making changes and customizations.
+There's nothing more personal in development than the environment in which you work.
+The size of these text tools makes me excited to make them mine, not daunted.
 
 In [this interview][changelog Vim episode], Gary Bernhardt talks about his 15 years of Vim use:
 
 [changelog Vim episode]: https://changelog.com/podcast/450#transcript-124
 
-> At the beginning of that time, TextMate was just becoming popular. 
+> At the beginning of that time, TextMate was just becoming popular.
 > Then it was Sublime Text was cool.
 > Then Atom was cool. Then VS Code was cool.
-> A lot of people switched between two of those, three of those, maybe all four of those, 
-> and that whole I was just getting better and better at Vim.
+> A lot of people switched between two of those, three of those, maybe all four of those,
+> and that whole time I was just getting better and better and better at Vim.
 > And you multiply that out by the length of a career, you use Vim for 40 years - 
-> you're gonna be so good at it by the end, and it's still gonna be totally relevant
+> you’re gonna be so good at it by the end, and it’s still gonna be totally relevant.
 
-- Ease of hacking
-- Own the tools, more skill with the editor or base system compounds over time
+Helix builds on my own 20 years of Vim use.
+Kitty builds on my equally long love affair with the command line.
+Being able to build on them to make an environment that uniquely suits me has me more excited to write code than I've been in years.

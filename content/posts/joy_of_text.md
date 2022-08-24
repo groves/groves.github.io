@@ -6,7 +6,7 @@ summary: 'Own your tools'
 ---
 
 Text goes back nearly to the beginning of computing.
-As soon as we could move past raw binary, we added it.
+As soon as we could move past binary, we added it.
 Despite huge advances in what we can display, it's stuck around as a primary interface.
 It efficiently conveys information and requires minimal capabilities to produce and display.
 
@@ -148,7 +148,8 @@ including [bringing the editor to the execution environment][VS Code remote deve
 [editor love survey]: https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-integrated-development-environment
 [VS Code remote development]: https://code.visualstudio.com/docs/remote/remote-overview
 
-Given its ubiquity and capabilities, why fight the tide of developer tooling to keep antiquated technology?
+Given its ubiquity and capabilities and the genuine affection it engenders, 
+why fight the tide of developer tooling to keep antiquated technology?
 For me, it's to have a chance of truly owning the tools I use, and through that finding joy in their use.
 
 [VS Code's src directory][VS Code src] has over 1 million lines of text in it.
@@ -168,7 +169,7 @@ and probably two orders of magnitude when you include Electron and plugins.
 These numbers aren't meant to be an absolute accounting of the complexity of these projects.
 Instead I think they serve as a proxy for the ease of making changes and customizations.
 There's nothing more personal in development than the environment in which you work.
-The size of these text tools makes me excited to make them mine, not daunted.
+The size of these text tools makes me excited to customize them for my workshop, not daunted.
 
 In [this interview][changelog Vim episode], Gary Bernhardt talks about his 15 years of Vim use:
 

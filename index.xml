@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>This is Being Known</title>
+    <link>https://sevorg.org/</link>
+    <description>Recent content on This is Being Known</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sevorg.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Joy of Text</title>
+      <link>https://sevorg.org/posts/joy_of_text/</link>
+      <pubDate>Wed, 24 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sevorg.org/posts/joy_of_text/</guid>
+      <description>Own your tools</description>
+    </item>
+    
+    <item>
+      <title>What is being known?</title>
+      <link>https://sevorg.org/posts/what_is_being_known/</link>
+      <pubDate>Fri, 17 Jun 2022 15:49:03 -0400</pubDate>
+      
+      <guid>https://sevorg.org/posts/what_is_being_known/</guid>
+      <description>This is being known</description>
+    </item>
+    
+    <item>
+      <title>Quantification</title>
+      <link>https://sevorg.org/posts/quantification/</link>
+      <pubDate>Sun, 03 Oct 2021 11:36:03 -0400</pubDate>
+      
+      <guid>https://sevorg.org/posts/quantification/</guid>
+      <description>I spent my late 20s and early 30s thinking I was a hateful person, at least some days</description>
+    </item>
+    
+  </channel>
+</rss>

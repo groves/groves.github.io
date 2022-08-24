@@ -1,7 +1,7 @@
 ---
 title: "Joy of Text"
-date: 2021-10-12
-draft: true
+date: 2022-08-24
+draft: false
 summary: 'Own your tools'
 ---
 

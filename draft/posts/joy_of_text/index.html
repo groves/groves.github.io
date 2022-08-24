@@ -7,17 +7,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
 <meta name="description" content="Own your tools">
-<meta name="generator" content="Hugo 0.98.0" />
+<meta name="generator" content="Hugo 0.101.0" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 
 
-<link rel="stylesheet" href="/draft/css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 
 
-<link rel="shortcut icon" href="/draft/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 
 
 
@@ -25,8 +25,8 @@
 
   <body>
     <nav class="navigation">
-	<a href="/draft/">Home</a>
-	<a href="/draft/about">About</a>
+	<a href="/">Home</a>
+	<a href="/about">About</a>
 
 	
 
@@ -41,7 +41,7 @@
     <h1 class="title">Joy of Text</h1>
 
     <div class="tip">
-        <time datetime="2021-10-12 18:03:33 -0400 EDT">Oct 12, 2021</time>
+        <time datetime="2022-08-24 00:00:00 &#43;0000 UTC">Aug 24, 2022</time>
     </div>
 
     
@@ -49,54 +49,110 @@
 
 
     <div class="content">
-      <h2 id="why">Why <a href="#why" class="anchor">#</a></h2><p>Text goes back to the beginning of computing. While it&rsquo;s not the first way we communicated with computers, it showed up as soon as we had the capabilities. Text efficiently conveys information to people and requires minimal capabilities to produce and display.</p>
-<p>That combination, information density and ease of creation, make it an ideal programming substrate. It enables the creation of clear, powerful interfaces while not being so complex as to discourage the programmer from modifying or creating their own interfaces. Using text for display encourages tools that the programmer can truly own, customizing and enhancing them as they learn.</p>
-<p>This remixes the Unix philosophy. It keeps the notions of comprehensible programs that work well together to allow for complete user control and comprehension of the environment. It doesn&rsquo;t slavishly keep the notion of text streams as the API between programs. In this philosophy, text is for humans and processes can communicate however&rsquo;s best for them.</p>
-<h2 id="philosophy">Philosophy <a href="#philosophy" class="anchor">#</a></h2><ul>
-<li>
-<p>System is split into an &ldquo;outpost&rdquo; where computation happens and text is produced and a &ldquo;hub&rdquo; where the text is shown and input is produced to send to the outpost</p>
-</li>
-<li>
-<p>Base outpost capabilities are shell, editor, text search, file find, fuzzy search, scrollback</p>
-</li>
-<li>
-<p>Base hub capabilities are modern terminal with unicode and programmer fonts, clipboard, browser driving via URL, file transfer, multiple terminal panes</p>
-</li>
-<li>
-<p>Base capabilities are testable for upgrades and new outposts</p>
-</li>
-<li>
-<p>Text as a medium means the path from hub to outpost doesn&rsquo;t affect its capabilities: local, SSH, Docker, and Docker through SSH are equal</p>
-</li>
-<li>
-<p>Able to work immediately in a new outpost. Creating a session sets up all the base capabilities. Even if set up isn&rsquo;t complete, you can invoke commands and they&rsquo;ll block and execute when set up does complete</p>
-</li>
-<li>
-<p>Opening a new pane in the hub keeps the outpost context of the pane it was openend from e.g. if I open a pane while in a directory in a Docker container through an SSH session, the new pane starts in that directory</p>
-</li>
-<li>
-<p>Own the tools, more skill with the editor or base system compounds over time</p>
-</li>
-<li>
-<p>Want to capture some notion of small tools and clear relations making the system debuggable and comprehensible. Is that true? How can we make it inherent in the design of the system? Want to avoid the IDE trap of tools that work differently or only inside of it</p>
-<ul>
-<li>Maybe the <a href="https://en.wikipedia.org/wiki/Unix_philosophy#Doug_McIlroy_on_Unix_programming" target="_blank" rel="noopener">McIllroy summarization of the Unix philosophy</a></li>
-</ul>
-</li>
-</ul>
+      <p>Text goes back nearly to the beginning of computing.
+As soon as we could move past binary, we added it.
+Despite huge advances in what we can display, it&rsquo;s stuck around as a primary interface.
+It efficiently conveys information and requires minimal capabilities to produce and display.</p>
+<p>That combination, information density and ease of creation, make text an ideal software development substrate.
+It enables the creation of usable, powerful tools while not being so complex as to discourage the developer from modifying them or creating their own.
+Using it for display encourages tools that the developer can truly own, customizing and enhancing them as they learn.</p>
+<h1 id="imagining-a-software-development-workshop">Imagining a software development workshop <a href="#imagining-a-software-development-workshop" class="anchor">#</a></h1><p>To contrast with integrated development environments(IDEs) that are the norm for software development today, we can imagine a collection of text-centric tools making a development workshop.
+In a physical workshop, tools can be used individually or they can be used in concert for more complex jobs.
+In a woodshop, it&rsquo;s common to build a jig to turn a complicated or impossible cut into an easy and repeatable one.</p>
+<p>Moving from an IDE to text tools allows allows software development to happen in that workshop style instead of a hermetically sealed environment.
+An IDE gains functionality by completely consuming a project: its compiler, dependencies, tests, packaging, execution, and so on.
+By controlling everything, the IDE is able integrate everything and produce a deep, unified view of the project.
+The requirement for that is steep: all aspects of the project must be understood by the IDE in the forms it expects.</p>
+<p>A text workshop doesn&rsquo;t need that depth of integration.
+Editing, <a href="https://github.com/junegunn/fzf" target="_blank" rel="noopener">file finding</a>, and <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">search</a> work without integration.
+The same command-line based build tooling that continuous integration uses can be used in the workshop.
+Using the <a href="https://microsoft.github.io/language-server-protocol/" target="_blank" rel="noopener">Language Server Protocol</a> a text-based editor  can take have the same deep code understanding that IDEs have.</p>
+<p>Importantly, it can do this piecemeal.
+Rather than having to consume the whole project, it&rsquo;s functional with no specific knowledge of the project and can add independent functionality as it&rsquo;s useful.
+The below sections imagine tools that allow that stacking of functionality in this workshop style.</p>
+<h2 id="terminal-as-workbench">Terminal as workbench <a href="#terminal-as-workbench" class="anchor">#</a></h2><p>A workbench is the heart of a workshop.
+The piece being worked on is brought to the bench along with all the tools necessary for the work.
+In text-centric development, the terminal is our workbench.</p>
+<p>Terminals have a <a href="https://vt100.net/dec/vt_history" target="_blank" rel="noopener">venerable history</a> and a <a href="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html" target="_blank" rel="noopener">midden of features</a> to attest to that.
+We don&rsquo;t need the majority of those.
+For our purposes, we need terminals to support two extremes in types of programs:</p>
+<ol>
+<li>Ones that emit a stream of text that the terminal draws in a scrolling pane</li>
+<li>Ones that draw characters at x, y coordinates the program specifies, taking over the pane</li>
+</ol>
+<p>The first type contains programs that immediately send their results to standard output.
+Language manuals often start with <a href="http://helloworldcollection.de/" target="_blank" rel="noopener">a simple program of this type</a>.
+That simplicity makes the type perpetually useful, as it allows quick creation of tools.
+Despite that ease, single-task programs like a compiler or server often don&rsquo;t need more user interface features than this.
+They can even <a href="https://github.com/Textualize/rich#readme" target="_blank" rel="noopener">precisely style their output</a> without giving up the ease of creation.</p>
+<p>The second type contains programs that draw a full user interface and update it over time.
+We need it for our editor, be it Vim, Emacs, or <a href="https://helix-editor.com/" target="_blank" rel="noopener">whatever you like</a>.
+By using the terminal&rsquo;s rows and columns of characters as an updatable canvas, we can interactively edit files.</p>
+<h2 id="bringing-multiple-tools-to-the-workbench">Bringing multiple tools to the workbench <a href="#bringing-multiple-tools-to-the-workbench" class="anchor">#</a></h2><p>Beyond supporting these kinds of text tools, we also need to be able to use multiple tools simultaneously.
+<a href="https://sw.kovidgoyal.net/kitty/" target="_blank" rel="noopener">Modern terminal emulators</a> allow the <a href="https://sw.kovidgoyal.net/kitty/overview/#layouts" target="_blank" rel="noopener">creation and layout</a> of multiple terminal panes in a single OS window.
+<a href="https://github.com/tmux/tmux/wiki" target="_blank" rel="noopener">Terminal multiplexers</a> allow the same thing in terminal emulators that don&rsquo;t support it natively.
+Using multiple terminal panes managed by either of these systems lets us bring multiple text-based tools to a shared &ldquo;workbench&rdquo;.</p>
+<p>(TKTK screenrecording of this in kitty)</p>
+<p>With this workbench approach, we can have an editor in one pane, a shell for running the compiler in a second, and a script running the server we&rsquo;re developing showing its logs in a third.
+Through the <a href="https://sw.kovidgoyal.net/kitty/kittens/custom/#using-kittens-to-script-kitty-without-any-terminal-ui" target="_blank" rel="noopener">scripting exposed by the terminal</a> we can bind a keystroke to <a href="https://github.com/groves/catherd/blob/6c4c98a5289d56f7fad55f060a03929ede35a3b3/reterm.py#L39" target="_blank" rel="noopener">rexecute the last command run in a shell</a> without leaving our editor pane.</p>
+<p>By using the terminal as our workbench, we create a uniform interface for manipulating our tools.
+Everything is a rectangle of text and can be handled at a high-level by the interfaces of the terminal.
+This uniformity lets us build simple tools that can be combined at these higher levels.</p>
+<h2 id="using-tools-in-concert">Using tools in concert <a href="#using-tools-in-concert" class="anchor">#</a></h2><p><a href="https://sw.kovidgoyal.net/kitty/kittens/custom/#using-kittens-to-script-kitty-without-any-terminal-ui" target="_blank" rel="noopener">That scripting</a> goes from <a href="https://terminalguide.namepad.de/seq/osc-52/" target="_blank" rel="noopener">extracting the text in a pane</a>,
+to <a href="https://wezfurlong.org/wezterm/shell-integration.html#osc-7-escape-sequence-to-set-the-working-directory" target="_blank" rel="noopener">sending data back to the controlling terminal</a>,
+to placing and creating panes based on that text and data.
+Because the system is entirely composed of text in panes, it allows access and control over everything in the environment.</p>
+<p>For example, if our tests are being run in one pane, we could run a script on the output of the command execution.
+That script would know the directory and project type based on terminal control codes emitted by the shell.
+From the project type, it&rsquo;d be able to map stack trace lines in a test failure to source files in the directory.
+It could then open an editor pane for each of the top three stack frames, showing the context of the failure through the stack.</p>
+<h2 id="bring-your-workbench-to-the-execution-environment">Bring your workbench to the execution environment <a href="#bring-your-workbench-to-the-execution-environment" class="anchor">#</a></h2><p>Because it&rsquo;s been around since the early days, text as a medium works as a lowest common denominator of execution environments.
+Whether we&rsquo;re working on our local laptop, on a server through SSH, in a Docker container, or in a Docker container on a server through <a href="https://mosh.org/" target="_blank" rel="noopener">Mosh</a> over <a href="https://tailscale.com/" target="_blank" rel="noopener">Tailscale</a>, all the text tools run equally well.
+An iPad with an external keyboard can be as effective as a laptop to develop remotely.</p>
+<p>If you define your workbench and all its tools with <a href="https://github.com/nix-community/home-manager" target="_blank" rel="noopener">Home Manager</a> in <a href="https://nixos.org/explore.html" target="_blank" rel="noopener">Nix</a> you can package the tools for an arbitrary instruction set in an arbitrary format.
+Compile them for Arm processors as a Docker layer and place that on top of the container you want to run.
+Or <a href="https://nixos.org/manual/nix/stable/command-ref/nix-copy-closure.html" target="_blank" rel="noopener">SCP the tools and their full dependencies</a> to anything you can SSH into.</p>
+<p>By being pure text, there are far fewer restrictions on where we can run our tools.
+That lets us run them in the most convenient place for the project instead of contorting the project to run alongside the tools.</p>
+<h2 id="blit-when-better">Blit when better <a href="#blit-when-better" class="anchor">#</a></h2><p>While text can be pushed surprisingly far in conveying information, there are things that are clearer as an image.
+If we want to display an image from our workbench, <a href="https://sw.kovidgoyal.net/kitty/graphics-protocol/" target="_blank" rel="noopener">modern terminals enable that</a>.
+Because the data is being transmitted through the terminal stream, it doesn&rsquo;t matter what we have between our local environment and where the image data lives:
+as long as we can get text through, we can get the image data through.</p>
+<p>This terminal escape hatch works for arbitrary types of data.
+If the execution environment wants the local environment to open a URL or to transfer a file, it can request that.
+Drilling through the terminal stream to the local environment allows us to use all the surrounding chrome.</p>
+<h1 id="why-not-vs-code">Why not VS Code <a href="#why-not-vs-code" class="anchor">#</a></h1><p>In the latest Stack Overflow developer editor usage survey,
+almost <a href="https://survey.stackoverflow.co/2022/#section-most-popular-technologies-integrated-development-environment" target="_blank" rel="noopener">75% of developers use VS Code</a> and
+<a href="https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-integrated-development-environment" target="_blank" rel="noopener">81% of them love it</a>.
+It can do everything described for the workbench above,
+including <a href="https://code.visualstudio.com/docs/remote/remote-overview" target="_blank" rel="noopener">bringing the editor to the execution environment</a>.</p>
+<p>Given its ubiquity and capabilities and the genuine affection it engenders,
+why fight the tide of developer tooling to keep antiquated technology?
+For me, it&rsquo;s to have a chance of truly owning the tools I use, and through that finding joy in their use.</p>
+<p><a href="https://github.com/microsoft/vscode/tree/main/src" target="_blank" rel="noopener">VS Code&rsquo;s src directory</a> has over 1 million lines of text in it.
+That&rsquo;s just the core editor, not counting the multitude of plugins that make it sing.
+It&rsquo;s built on Electron, which pulls in the complexity of the entire browser stack.</p>
+<p>By contrast, <a href="https://helix-editor.com/" target="_blank" rel="noopener">Helix</a>, my preferred editor has 40 thousand lines of text in <a href="https://github.com/helix-editor/helix" target="_blank" rel="noopener">its source directories</a>.
+Kitty, my terminal of choice, has 80 thousand lines of text in <a href="https://github.com/kovidgoyal/kitty/tree/master/kitty" target="_blank" rel="noopener">its source directory</a>.
+Their combined 120 thousand lines of text are an order of magnitude less than what&rsquo;s in VS Code,
+and probably two orders of magnitude when you include Electron and plugins.</p>
+<p>These numbers aren&rsquo;t meant to be an absolute accounting of the complexity of these projects.
+Instead I think they serve as a proxy for the ease of making changes and customizations.
+There&rsquo;s nothing more personal in development than the environment in which you work.
+The size of these text tools makes me excited to customize them for my workshop, not daunted.</p>
+<p>In <a href="https://changelog.com/podcast/450#transcript-124" target="_blank" rel="noopener">this interview</a>, Gary Bernhardt talks about his 15 years of Vim use:</p>
 <blockquote>
-<p>This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
-- Though not really as we want text as a human interface, not a program to program interface. Interprocess should use structured data</p>
+<p>At the beginning of that time, TextMate was just becoming popular.
+Then it was Sublime Text was cool.
+Then Atom was cool. Then VS Code was cool.
+A lot of people switched between two of those, three of those, maybe all four of those,
+and that whole time I was just getting better and better and better at Vim.
+And you multiply that out by the length of a career, you use Vim for 40 years -
+you’re gonna be so good at it by the end, and it’s still gonna be totally relevant.</p>
 </blockquote>
-<ul>
-<li>Want to bake in a notion of simplicity that text allows on both sides of the system</li>
-</ul>
-<h2 id="shenandoah-notes">Shenandoah Notes <a href="#shenandoah-notes" class="anchor">#</a></h2><p>Terminal stream makes an ideal separation between display and computation</p>
-<p>Simplicity of text for display removes requirements both on the computation and display sides. The bar is low.</p>
-<p>An iPad with an external keyboard can be as effective as a laptop.</p>
-<p>Drilling through the terminal stream to the display OS with escapes allows the surrounding chrome to be used: clipboard, file transfer, URL display, bitmap display.</p>
-<p>Webapps require so much more of the display in the browser. Their output is much less composable due to the complexity of the app.</p>
-<p>Location independent executables let us make the computation environment equally functional with only copy facilities for bootstrap. Determine the architecture with a first command, and then copy over appropriate tools.</p>
+<p>Helix builds on my own 20 years of Vim use.
+Kitty builds on my equally long love affair with the command line.
+Being able to build on them to make an environment that uniquely suits me has me more excited to write code than I&rsquo;ve been in years.</p>
 
     </div>
 

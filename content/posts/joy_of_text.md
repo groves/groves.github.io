@@ -78,8 +78,6 @@ Using multiple terminal panes managed by either of these systems lets us bring m
 [kitty layout]: https://sw.kovidgoyal.net/kitty/overview/#layouts
 [tmux]: https://github.com/tmux/tmux/wiki
 
-(TKTK screenrecording of this in kitty)
-
 With this workbench approach, we can have an editor in one pane, a shell for running the compiler in a second, and a script running the server we're developing showing its logs in a third.
 Through the [scripting exposed by the terminal][kitty scripting] we can bind a keystroke to [rexecute the last command run in a shell][reterm] without leaving our editor pane.
 

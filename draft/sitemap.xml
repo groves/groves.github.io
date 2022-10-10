@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://sevorg.org/draft/posts/joy_of_text/</loc>
-    <lastmod>2022-08-24T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://sevorg.org/draft/posts/</loc>
-    <lastmod>2022-08-24T00:00:00+00:00</lastmod>
+    <lastmod>2022-10-10T15:23:07-04:00</lastmod>
   </url><url>
     <loc>https://sevorg.org/draft/</loc>
+    <lastmod>2022-10-10T15:23:07-04:00</lastmod>
+  </url><url>
+    <loc>https://sevorg.org/draft/posts/why_ate/</loc>
+    <lastmod>2022-10-10T15:23:07-04:00</lastmod>
+  </url><url>
+    <loc>https://sevorg.org/draft/posts/joy_of_text/</loc>
     <lastmod>2022-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sevorg.org/draft/posts/what_is_being_known/</loc>

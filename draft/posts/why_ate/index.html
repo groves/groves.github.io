@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Why ate? | This is Being Known</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="Have you heard the good news about hyperlinks?">
+<meta name="generator" content="Hugo 0.101.0" />
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/draft/css/style.css">
+
+<link rel="shortcut icon" href="/draft/images/favicon.ico" type="image/x-icon" />
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	<a href="/draft/">Home</a>
+	<a href="/draft/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Why ate?</h1>
+
+    <div class="tip">
+        <time datetime="2022-10-10 15:23:07 -0400 EDT">Oct 10, 2022</time>
+    </div>
+
+    
+    
+
+
+    <div class="content">
+      <p>My name is Charlie Groves and I have a stunning confession to make:
+it is 2022 and I have written a <a href="https://en.wikipedia.org/wiki/Terminal_pager" target="_blank" rel="noopener">terminal pager</a>.</p>
+<p>It&rsquo;s not 1984, when the <a href="https://en.wikipedia.org/wiki/Less_%28Unix%29" target="_blank" rel="noopener">best known pager</a> was created.
+It&rsquo;s 2022.
+Why now?</p>
+<p>In a word: <em>hyperlinks</em>.</p>
+<p>HTML popularized hyperlinks in the early 1990s.
+For the next 25 years, terminal authors slept on linking technology.
+Then, in 2017, the authors of Gnome Terminal and iTerm2 added <a href="https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda" target="_blank" rel="noopener">terminal codes for hyperlinks</a>.
+In the intervening years <a href="https://sw.kovidgoyal.net/kitty/glossary/#term-hyperlinks" target="_blank" rel="noopener">many</a> <a href="https://wezfurlong.org/wezterm/hyperlinks.html" target="_blank" rel="noopener">other</a> <a href="https://github.com/microsoft/terminal/pull/7251" target="_blank" rel="noopener">excellent</a> <a href="https://github.com/alacritty/alacritty/pull/6139" target="_blank" rel="noopener">terminals</a> added support.</p>
+<p>That critical mass of terminals means more applications can emit links.
+Your compiler or test runner or <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">recursive grep</a> can now link to a character in a line in a file they think you might find interesting.
+I wanted to be able to navigate those links and open them in my editor easily as part of my workflow.</p>
+<p>I wrote <a href="https://github.com/groves/ate" target="_blank" rel="noopener">ate</a> to do that.
+Before we get into what ate does, let&rsquo;s talk about how terminal links work and make it possible.</p>
+<h2 id="terminal-hyperlinks">Terminal Hyperlinks <a href="#terminal-hyperlinks" class="anchor">#</a></h2><p>Like setting a color and many other terminal commands, links are started by printing a control code to the terminal stream.
+If you emit <code>\e]8;;file://feh/home/groves\e\\</code>, text you print after that will link to <code>/home/groves</code> on a host named &lsquo;feh&rsquo;.</p>
+<blockquote>
+<p>Aside: <code>\e</code> is the <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C" target="_blank" rel="noopener">C escape sequence</a> for the <a href="https://en.wikipedia.org/wiki/Escape_character#ASCII_escape_character" target="_blank" rel="noopener">escape character</a> in ASCII.
+The escape character starts many terminal control codes.
+<code>\e</code> is the most common way to see it in when writing out terminal codes.
+Escape is the 27th character in ASCII, so it also shows up as 0x1b or 033, which are 27 in hex or octal respectively.</p>
+</blockquote>
+<blockquote>
+<p><code>\\</code> is the C escape for <code>\</code>. The other characters are literal ASCII characters.</p>
+</blockquote>
+<p>To compare <code>\e]8;;file://feh/home/groves\e\\</code> to the equivalent HTML, <code>&lt;a href=&quot;file://feh/home/groves&quot;&gt;</code>:</p>
+<ul>
+<li><code>\e</code> is like <code>&lt;</code>, it tells the parser that a tag is coming</li>
+<li><code>]8</code> is like <code>a</code>, it indicates what the tag is</li>
+<li><code>;;file://feh/home/groves</code> is like <code>href=file://feh/home/groves&quot;</code>, it&rsquo;s the data for that tag</li>
+<li><code>\e\\</code> is like <code>&gt;</code>, it says we&rsquo;re out of the tag and back to stuff to show the user</li>
+</ul>
+<p>To close a hyperlink in the terminal print <code>\e]8;;\e\\</code>.
+It&rsquo;s equvalent to <code>&lt;/a&gt;</code> in HTML.
+Text printed after that won&rsquo;t be linked, at least not until another link is started.</p>
+<p>To put it all together, run <code>printf '\e]8;;https://sevorg.org/posts/why_ate/\e\\Why Ate\e]8;;\e\\'</code> in your terminal.
+If your terminal supports links, it will print the text &ldquo;Why Ate&rdquo; linking to this page.
+Since you&rsquo;re already on this page, I hope that&rsquo;s the most useless terminal hyperlink you encounter.</p>
+
+    </div>
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+</footer>
+
+
+
+  </body>
+</html>

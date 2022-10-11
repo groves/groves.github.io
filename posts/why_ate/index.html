@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Why ate? | This is Being Known</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="Have you heard the good news about hyperlinks?">
+<meta name="generator" content="Hugo 0.101.0" />
+
+
+  <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	<a href="/">Home</a>
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Why ate?</h1>
+
+    <div class="tip">
+        <time datetime="2022-10-10 15:23:07 -0400 EDT">Oct 10, 2022</time>
+    </div>
+
+    
+    
+
+
+    <div class="content">
+      <p>My name is Charlie Groves and I have a stunning confession to make:
+I wrote a <a href="https://en.wikipedia.org/wiki/Terminal_pager" target="_blank" rel="noopener">terminal pager</a> in 2022.</p>
+<p>It&rsquo;s not 1984, when the <a href="https://en.wikipedia.org/wiki/Less_%28Unix%29" target="_blank" rel="noopener">best known pager</a> was created.
+It&rsquo;s 2022.
+Why now?</p>
+<p>Just one word: <em>hyperlinks</em>.</p>
+<p>HTML popularized hyperlinks in the early 1990s.
+For the next 25 years, terminal authors slept on linking technology.
+Then, in 2017, the authors of Gnome Terminal and iTerm2 added <a href="https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda" target="_blank" rel="noopener">terminal codes for hyperlinks</a>.
+In the intervening years <a href="https://sw.kovidgoyal.net/kitty/glossary/#term-hyperlinks" target="_blank" rel="noopener">many</a> <a href="https://wezfurlong.org/wezterm/hyperlinks.html" target="_blank" rel="noopener">other</a> <a href="https://github.com/microsoft/terminal/pull/7251" target="_blank" rel="noopener">excellent</a> <a href="https://github.com/alacritty/alacritty/pull/6139" target="_blank" rel="noopener">terminals</a> added support.</p>
+<p>That critical mass of terminals meant more applications can emit links.
+Your compiler or test runner or <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">recursive grep</a> could link to a character in a line in a file they thought you might find interesting.
+I wanted to press one key in my editor to run my compiler or test runner in a separate terminal pane which then navigated to the first error if any.</p>
+<p>I wrote <a href="https://github.com/groves/ate" target="_blank" rel="noopener">ate</a> to do that.
+Before we get into what ate does, let&rsquo;s talk about how terminal links work and make it possible.</p>
+<h1 id="terminal-hyperlinks">Terminal Hyperlinks <a href="#terminal-hyperlinks" class="anchor">#</a></h1><p>Like setting a color and many other terminal commands, links are started by printing an escape sequence to the terminal stream.
+If you print <code>\e]8;;file://feh/home/groves\e\\</code>, text you print after that will link to <code>/home/groves</code> on a host named &lsquo;feh&rsquo;.</p>
+<blockquote>
+<p>Aside: <code>\e</code> is the <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C" target="_blank" rel="noopener">C escape sequence</a> for the <a href="https://en.wikipedia.org/wiki/Escape_character#ASCII_escape_character" target="_blank" rel="noopener">escape character</a> in ASCII.
+The escape character starts terminal escape sequences.
+<code>\e</code> is a common way to see it in when writing them out.
+Escape is the 27th character in ASCII, so you may also see it as 0x1b or 033, which are 27 in hex or octal respectively.</p>
+</blockquote>
+<blockquote>
+<p><code>\\</code> is the C escape for <code>\</code>. <code>\e\\</code> is called &ldquo;string terminator&rdquo; in terminals and it ends many escape sequences.</p>
+</blockquote>
+<blockquote>
+<p>The other characters are literal ASCII characters.</p>
+</blockquote>
+<p>To compare <code>\e]8;;file://feh/home/groves\e\\</code> to the equivalent HTML, <code>&lt;a href=&quot;file://feh/home/groves&quot;&gt;</code>:</p>
+<ul>
+<li><code>\e</code> is like <code>&lt;</code>, it tells the parser that a tag is coming</li>
+<li><code>]8;</code> is like <code>a</code>, it indicates what the tag is</li>
+<li><code>;file://feh/home/groves</code> is like <code>href=file://feh/home/groves&quot;</code>, it&rsquo;s the data for that tag</li>
+<li><code>\e\\</code> is like <code>&gt;</code>, it says we&rsquo;re out of the tag and back to stuff to show the user</li>
+</ul>
+<p>To close a hyperlink in the terminal print <code>\e]8;;\e\\</code>.
+It&rsquo;s equvalent to <code>&lt;/a&gt;</code> in HTML.
+Text printed after that won&rsquo;t be linked, at least not until another link is started.</p>
+<p>To put it all together, run <code>printf '\e]8;;https://sevorg.org/posts/why_ate/\e\\Why Ate\e]8;;\e\\'</code> in your terminal.
+If your terminal supports links, it will print the text &ldquo;Why Ate&rdquo; linking to this page.
+Since you&rsquo;re already on this page, I hope that&rsquo;s the most useless terminal hyperlink you encounter.</p>
+<h2 id="hyperlink-params">Hyperlink Params <a href="#hyperlink-params" class="anchor">#</a></h2><p>You may have been wondering about the <code>;</code> before the <code>file://</code> URI in the escape sequence.
+Terminal hyperlinks may also include another chunk of data before that <code>;</code>: params.
+Params are key-value pairs separated by <code>:</code>.</p>
+<p><code>line=12:column=5</code> would create a key <code>line</code> with the value <code>12</code> and a key <code>column</code> with the value <code>5</code> in a hyperlink.
+That would look like this in a full hyperlink escape sequence: <code>\e]8;line=12:column=5;file://feh/home/groves/ate/README.md\e\\</code>.
+An application reading that link could open the file in your editor at the specific line and column given in the params.</p>
+<h1 id="put-a-link-on-it">Put a Link On It <a href="#put-a-link-on-it" class="anchor">#</a></h1><p>That&rsquo;s all there is to creating links.
+As someone authoring a program that runs in the terminal, if you&rsquo;re printing something that relates to a local file, you put a <code>file://</code> link on it.
+If you&rsquo;re printing something that has a home on the web, you put an <code>http://</code> link on it.</p>
+<p>Some terminal applications are already doing that:</p>
+<ul>
+<li><a href="https://github.com/dandavison/delta" target="_blank" rel="noopener">delta</a> links to files in git diffs and revisions in git log.</li>
+<li><a href="https://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=blob_plain;f=NEWS;hb=HEAD" target="_blank" rel="noopener">ls 8.28</a> links to files if given a <code>--hyperlink</code> flag.</li>
+<li><a href="https://developers.redhat.com/blog/2020/03/26/static-analysis-in-gcc-10" target="_blank" rel="noopener">gcc 10</a> links to the description of a problem it finds in your code.</li>
+</ul>
+<p>There&rsquo;s a bit of a bootstrapping problem in getting widespread application support for linking though.
+Until enough users want hyperlinks, application authors won&rsquo;t add them.
+Until enough applications add hyperlinks, users won&rsquo;t have a reason to use them.
+Application authors will likely still add them since it&rsquo;s a cool and useful feature, but it will take a while for it to spread.</p>
+<p>Luckily, since <a href="/posts/joy_of_text/">terminal applications are directly manipulable text</a>, you don&rsquo;t need to wait for an application to emit links itself.
+Kovid Goyal, the author of the <a href="https://sw.kovidgoyal.net/kitty/" target="_blank" rel="noopener">kitty terminal</a>, wanted links to the matches in <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">ripgrep</a>.
+He created a <a href="https://sw.kovidgoyal.net/kitty/kittens/hyperlinked_grep/" target="_blank" rel="noopener">wrapper around ripgrep that inserts those links</a>.</p>
+<p>The <a href="https://github.com/kovidgoyal/kitty/blob/48a4edc199a589f80683dfe2a94d5a604247fdb9/kittens/hyperlinked_grep/main.py#L82" target="_blank" rel="noopener">link insertion code</a> is straightforward:</p>
+<ul>
+<li>take every line of ripgrep&rsquo;s output</li>
+<li>extract which file we&rsquo;re matching</li>
+<li>wrap search results in a link to the matched line in the file</li>
+<li>print ripgrep&rsquo;s original output with those links</li>
+</ul>
+<p>With that, you can run <code>hyperlinked_grep</code> anywhere you&rsquo;d run ripgrep,
+pass the same flags you&rsquo;d pass to ripgrep,
+get the same displayed output you&rsquo;d get from ripgrep,
+but also get links embedded in that output.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>I wanted links to compile errors, test failures, and backtraces from <a href="https://doc.rust-lang.org/cargo/" target="_blank" rel="noopener">cargo</a>, the Rust build tool.
+I wrote a <a href="https://github.com/groves/hyperer" target="_blank" rel="noopener">wrapper around cargo that inserts those links</a> patterned off the one Kovid wrote for ripgrep.</p>
+<p>We don&rsquo;t need to track the current file in cargo output, so the <a href="https://github.com/groves/hyperer/blob/dbf4044e6e3670631a940fc518876be2b0ba73d2/hyperer/hcargo.py#L14" target="_blank" rel="noopener">link insertion code</a> is straightforward enough to walk through here:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Use regular expressions to match certain output from cargo</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Match assertion failures that look eg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># right: `0`&#39;, src/main.rs:1012:9</span>
+</span></span><span style="display:flex;"><span>assert_pat <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">br</span><span style="color:#e6db74">&#39; +(?:left|right):.+ (.+):(\d+):(\d+)&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Match backtrace lines eg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># at /build/rustc-1.63.0-src/library/core/src/panicking.rs:181:5</span>
+</span></span><span style="display:flex;"><span>btrace_pat <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">br</span><span style="color:#e6db74">&#39; +at (.+):(\d+):(\d+)&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Match compile errors eg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   --&gt; src/main.rs:55:1</span>
+</span></span><span style="display:flex;"><span>num_pat <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">br</span><span style="color:#e6db74">&#39; +--&gt; (.+):(\d+):(\d+)&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This gets called for every line cargo prints</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># write - a function that writes a line to our output</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># raw_line - the input line from cargo with styling included</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># clean_line - the text from raw line without styling</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">line_handler</span>(write, raw_line, clean_line):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> pat <span style="color:#f92672">in</span> [assert_pat, btrace_pat, num_pat]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> m <span style="color:#f92672">:=</span> pat<span style="color:#f92672">.</span>match(clean_line):
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># One of our patterns matched! </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Surround raw_line with a link and print it</span>
+</span></span><span style="display:flex;"><span>      write_hyperlink(write, line<span style="color:#f92672">=</span>raw_line, 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Link to the file in the first parentheses in the pattern</span>
+</span></span><span style="display:flex;"><span>        path<span style="color:#f92672">=</span>m<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">1</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Make the URI fragment the line from the second parentheses</span>
+</span></span><span style="display:flex;"><span>        frag<span style="color:#f92672">=</span>m<span style="color:#f92672">.</span>group(<span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># None of the patterns matched. Original line, please drive through</span>
+</span></span><span style="display:flex;"><span>  write(raw_line)
+</span></span></code></pre></div><p>If you&rsquo;re using kitty, you already have <code>hyperlinked_grep</code> installed.
+Follow the <a href="https://sw.kovidgoyal.net/kitty/kittens/hyperlinked_grep/" target="_blank" rel="noopener">setup instructions</a> to start using it.</p>
+<p>If you&rsquo;re not using kitty and you want <code>hyperlinked_grep</code>, or you want my cargo linkifier, you can install <a href="https://github.com/groves/hyperer" target="_blank" rel="noopener">hyperer</a>.
+It installs the ripgrep wrapper as <code>hyperer-rg</code> and the cargo wrapper as <code>hyperer-cargo</code>.</p>
+<p>If you want links in the output of another command, hopefully it seems straightforward to write a wrapper now.
+hyperer can be a good starting point for writing a wrapper.
+Please send PRs to hyperer with any generally useful wrappers.</p>
+<h1 id="so-why-ate">So, why ate? <a href="#so-why-ate" class="anchor">#</a></h1><p>With an understanding of terminal hyperlinks and how to get them, we can now talk about the motivation for ate.
+Like many developers, I love a tight edit-compile-test loop.
+An integrated development environment(IDE) &ldquo;integrates&rdquo; tools to make that loop tight.
+I don&rsquo;t want to give up <a href="/posts/joy_of_text/#imagining-a-software-development-workshop">the control that an IDE requires</a>, so I need a way to integrate arbitrary tools.
+ate and terminal hyperlinks do that integration.</p>
+ 
+
+<video width=100% controls>
+    <source src="/ate_edit_test_loop.mp4" type="video/mp4">
+    Your browser does not support the video tag.  
+</video>
+
+
+
+<p>In that video, I:</p>
+<ul>
+<li>make an edit</li>
+<li>hit F4 to rerun my last shell command, <code>,cargo test</code>, which is <a href="https://github.com/groves/ate#ate_open_first" target="_blank" rel="noopener">this script</a></li>
+<li>fix the compile error that running <code>,cargo test</code> brings me to in my editor</li>
+<li>hit F4 to rerun <code>,cargo test</code> and see the compile error fixed</li>
+</ul>
+<p>That&rsquo;s a tight edit-compile-test loop.</p>
+<p>What is ate doing to make that possible?
+It looks through the output that hyperer-cargo produces.
+If there&rsquo;s a link in the output, ate runs the command in the <code>ATE_OPENER</code> environment variable passing it the URI because <code>ATE_OPEN_FIRST</code> is set and telling it to open the first link it finds when it runs.</p>
+<p>ate also breaks long output into pages like less and other pagers.
+It lets you move back and forth between links with <code>n</code> and <code>N</code>.
+It searches in links if you type <code>/</code>.</p>
+<p>All that&rsquo;s to say that ate doesn&rsquo;t do much.
+It&rsquo;s the bridge between commands that produce links and whatever you want to do with those links.
+That it&rsquo;s simple is a feature: you can make any terminal program produce links and you can send them to any other program.
+ate lets you make that connection however you like, and that&rsquo;s why ate.</p>
+
+    </div>
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+</footer>
+
+
+
+  </body>
+</html>

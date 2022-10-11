@@ -2,3 +2,5 @@ baseURL = 'https://sevorg.org'
 languageCode = 'en-us'
 theme = 'mini'
 title = 'This is Being Known'
+
+markup.highlight.style = 'xcode'

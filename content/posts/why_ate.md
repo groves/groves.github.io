@@ -1,12 +1,12 @@
 ---
 title: "Why ate?"
 date: 2022-10-10T15:23:07-04:00
-draft: true
+draft: false
 summary: 'Have you heard the good news about hyperlinks?'
 ---
 
 My name is Charlie Groves and I have a stunning confession to make:
-I have written a [terminal pager] in 2022.
+I wrote a [terminal pager] in 2022.
 
 [terminal pager]: https://en.wikipedia.org/wiki/Terminal_pager
 
@@ -29,9 +29,9 @@ In the intervening years [many][kitty hyperlinks] [other][wezterm hyperlinks] [e
 [windows terminal hyperlinks]: https://github.com/microsoft/terminal/pull/7251
 [alacritty hyperlinks]: https://github.com/alacritty/alacritty/pull/6139
 
-That critical mass of terminals means more applications can emit links.
-Your compiler or test runner or [recursive grep][ripgrep] can now link to a character in a line in a file they think you might find interesting.
-I wanted to be able to navigate those links and open them in my editor easily as part of my workflow.
+That critical mass of terminals meant more applications can emit links.
+Your compiler or test runner or [recursive grep][ripgrep] could link to a character in a line in a file they thought you might find interesting.
+I wanted to press one key in my editor to run my compiler or test runner in a separate terminal pane which then navigated to the first error if any.
 
 I wrote [ate] to do that.
 Before we get into what ate does, let's talk about how terminal links work and make it possible.
@@ -77,7 +77,7 @@ Terminal hyperlinks may also include another chunk of data before that `;`: para
 Params are key-value pairs separated by `:`.
 
 `line=12:column=5` would create a key `line` with the value `12` and a key `column` with the value `5` in a hyperlink.
-That would look like this in a full hyperlink escape sequence: `\e]8;line=12:column=5;file://feh/home/groves/ate/README.md\e\\`
+That would look like this in a full hyperlink escape sequence: `\e]8;line=12:column=5;file://feh/home/groves/ate/README.md\e\\`.
 An application reading that link could open the file in your editor at the specific line and column given in the params.
 
 Put a Link On It
@@ -95,10 +95,10 @@ Some terminal applications are already doing that:
 [ls NEWS]: https://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=blob_plain;f=NEWS;hb=HEAD
 [gcc 10 static analysis]: https://developers.redhat.com/blog/2020/03/26/static-analysis-in-gcc-10
 
-There's a bit of a bootstrapping problem in getting widespread application support for linking.
+There's a bit of a bootstrapping problem in getting widespread application support for linking though.
 Until enough users want hyperlinks, application authors won't add them.
 Until enough applications add hyperlinks, users won't have a reason to use them.
-Application authors will likely still add them since it's a cool and useful feature, but it will likely take a while for it to spread.
+Application authors will likely still add them since it's a cool and useful feature, but it will take a while for it to spread.
 
 Luckily, since [terminal applications are directly manipulable text][joy of text], you don't need to wait for an application to emit links itself.
 Kovid Goyal, the author of the [kitty terminal], wanted links to the matches in [ripgrep].
@@ -162,16 +162,19 @@ I wrote a [wrapper around cargo that inserts those links][hyperer] patterned off
 [cargo]: https://doc.rust-lang.org/cargo/
 [hyperer]: https://github.com/groves/hyperer
 
-The [link insertion code][cargo link insertion] is even more straightforward than for ripgrep since we don't need to track the current file:
+We don't need to track the current file in cargo output, so the [link insertion code][cargo link insertion] is straightforward enough to walk through here:
 
 ```python
 # Use regular expressions to match certain output from cargo
+
 # Match assertion failures that look eg
 # right: `0`', src/main.rs:1012:9
 assert_pat = re.compile(br' +(?:left|right):.+ (.+):(\d+):(\d+)')
+
 # Match backtrace lines eg
 # at /build/rustc-1.63.0-src/library/core/src/panicking.rs:181:5
 btrace_pat = re.compile(br' +at (.+):(\d+):(\d+)')
+
 # Match compile errors eg
 #   --> src/main.rs:55:1
 num_pat = re.compile(br' +--> (.+):(\d+):(\d+)')
@@ -184,10 +187,11 @@ def line_handler(write, raw_line, clean_line):
   for pat in [assert_pat, btrace_pat, num_pat]:
     if m := pat.match(clean_line):
       # One of our patterns matched! 
-      # Surround raw_line with a link and print it.
-      # Link to the file in the first set of parenthesis in the pattern
-      # Make the URI fragment the line from the second parenthesis
-      write_hyperlink(write, path=m.group(1), line=raw_line, 
+      # Surround raw_line with a link and print it
+      write_hyperlink(write, line=raw_line, 
+        # Link to the file in the first parentheses in the pattern
+        path=m.group(1),
+        # Make the URI fragment the line from the second parentheses
         frag=m.group(2))
       return
   # None of the patterns matched. Original line, please drive through
@@ -198,10 +202,53 @@ def line_handler(write, raw_line, clean_line):
 
 If you're using kitty, you already have `hyperlinked_grep` installed.
 Follow the [setup instructions][hyperlinked_grep] to start using it.
-If you're not using kitty and you want `hyperlinked_grep`, or you want my cargo linkifier, you can install [hyperer].
-If you want links in the output of another command, hopefully it seems straightforward to write a wrapper now.
-hyperer can be a good starting point for writing a wrapper, and please send PRs to hyperer with any generally useful wrappers.
 
-Did you forget about ate?
-=========================
-With an understanding of terminal hyperlinks and how to get them, we can talk about the motivation for ate.
+If you're not using kitty and you want `hyperlinked_grep`, or you want my cargo linkifier, you can install [hyperer].
+It installs the ripgrep wrapper as `hyperer-rg` and the cargo wrapper as `hyperer-cargo`.
+
+If you want links in the output of another command, hopefully it seems straightforward to write a wrapper now.
+hyperer can be a good starting point for writing a wrapper.
+Please send PRs to hyperer with any generally useful wrappers.
+
+So, why ate?
+============
+With an understanding of terminal hyperlinks and how to get them, we can now talk about the motivation for ate.
+Like many developers, I love a tight edit-compile-test loop.
+An integrated development environment(IDE) "integrates" tools to make that loop tight.
+I don't want to give up [the control that an IDE requires][software workshop], so I need a way to integrate arbitrary tools.
+ate and terminal hyperlinks do that integration.
+
+[software workshop]: /posts/joy_of_text/#imagining-a-software-development-workshop
+
+{{< rawhtml >}} 
+
+<video width=100% controls>
+    <source src="/ate_edit_test_loop.mp4" type="video/mp4">
+    Your browser does not support the video tag.  
+</video>
+
+{{< /rawhtml >}}
+
+In that video, I:
+* make an edit
+* hit F4 to rerun my last shell command, `,cargo test`, which is [this script][ATE_OPEN_FIRST] 
+* fix the compile error that running `,cargo test` brings me to in my editor
+* hit F4 to rerun `,cargo test` and see the compile error fixed
+
+[ATE_OPEN_FIRST]: https://github.com/groves/ate#ate_open_first
+
+That's a tight edit-compile-test loop.
+
+What is ate doing to make that possible?
+It looks through the output that hyperer-cargo produces.
+If there's a link in the output, ate runs the command in the `ATE_OPENER` environment variable passing it the URI because `ATE_OPEN_FIRST` is set and telling it to open the first link it finds when it runs.
+
+ate also breaks long output into pages like less and other pagers.
+It lets you move back and forth between links with `n` and `N`.
+It searches in links if you type `/`.
+
+All that's to say that ate doesn't do much.
+It's the bridge between commands that produce links and whatever you want to do with those links.
+That it's simple is a feature: you can make any terminal program produce links and you can send them to any other program.
+ate lets you make that connection however you like, and that's why ate.
+

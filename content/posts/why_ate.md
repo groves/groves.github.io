@@ -200,6 +200,8 @@ def line_handler(write, raw_line, clean_line):
 
 [cargo link insertion]: https://github.com/groves/hyperer/blob/dbf4044e6e3670631a940fc518876be2b0ba73d2/hyperer/hcargo.py#L14
 
+All of cargo's output is fed to that line_handler function and you get linkified cargo out the other side.
+
 If you're using kitty, you already have `hyperlinked_grep` installed.
 Follow the [setup instructions][hyperlinked_grep] to start using it.
 

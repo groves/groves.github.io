@@ -22,7 +22,7 @@ This progression was an unexpected benefit of S&S. While the group workouts kept
 
 I've also tried tracking my food and alcohol consumption, my mood, and my productivity in a spreadsheet to try to link all that together with sleep and exercise. The goal was to have an overall view into my [Sim-like need meters](https://www.ign.com/wikis/the-sims-3/Need_Meters).
 
-It didn't work at all. I found recording food intake too tedious to suffer through and couldn't stand the arbitraryness of the mood and productivity measures. I only kept it up for a few weeks.
+It didn't work at all. I found recording food intake too tedious to suffer through and couldn't stand the arbitrariness of the mood and productivity measures. I only kept it up for a few weeks.
 
 Both sleep tracking and S&S hit the sweet spot of quantification for me:
 

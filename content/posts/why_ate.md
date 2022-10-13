@@ -64,7 +64,7 @@ To compare `\e]8;;file://feh/home/groves\e\\` to the equivalent HTML, `<a href="
 * `\e\\` is like `>`, it says we're out of the tag and back to stuff to show the user
 
 To close a hyperlink in the terminal print `\e]8;;\e\\`.
-It's equvalent to `</a>` in HTML.
+It's equivalent to `</a>` in HTML.
 Text printed after that won't be linked, at least not until another link is started.
 
 To put it all together, run `printf '\e]8;;https://sevorg.org/posts/why_ate/\e\\Why Ate\e]8;;\e\\'` in your terminal.

@@ -85,7 +85,7 @@ Escape is the 27th character in ASCII, so you may also see it as 0x1b or 033, wh
 <li><code>\e\\</code> is like <code>&gt;</code>, it says we&rsquo;re out of the tag and back to stuff to show the user</li>
 </ul>
 <p>To close a hyperlink in the terminal print <code>\e]8;;\e\\</code>.
-It&rsquo;s equvalent to <code>&lt;/a&gt;</code> in HTML.
+It&rsquo;s equivalent to <code>&lt;/a&gt;</code> in HTML.
 Text printed after that won&rsquo;t be linked, at least not until another link is started.</p>
 <p>To put it all together, run <code>printf '\e]8;;https://sevorg.org/posts/why_ate/\e\\Why Ate\e]8;;\e\\'</code> in your terminal.
 If your terminal supports links, it will print the text &ldquo;Why Ate&rdquo; linking to this page.

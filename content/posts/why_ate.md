@@ -42,7 +42,8 @@ Before we get into what ate does, let's talk about how terminal links work and m
 Terminal Hyperlinks
 ===================
 Like setting a color and many other terminal commands, links are started by printing an escape sequence to the terminal stream.
-If you print `\e]8;;file://feh/home/groves\e\\`, text you print after that will link to `/home/groves` on a host named 'feh'.
+Printing `\e]8;;file://feh/home/groves\e\\` starts a link to `/home/groves` on a host named 'feh'.
+The terminal will know that text printed after that links there.
 
 > Aside: `\e` is the [C escape sequence] for the [escape character] in ASCII.
 The escape character starts terminal escape sequences.

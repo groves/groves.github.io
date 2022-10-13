@@ -63,7 +63,8 @@ I wanted to press one key in my editor to run my compiler or test runner in a se
 <p>I wrote <a href="https://github.com/groves/ate" target="_blank" rel="noopener">ate</a> to do that.
 Before we get into what ate does, let&rsquo;s talk about how terminal links work and make it possible.</p>
 <h1 id="terminal-hyperlinks">Terminal Hyperlinks <a href="#terminal-hyperlinks" class="anchor">#</a></h1><p>Like setting a color and many other terminal commands, links are started by printing an escape sequence to the terminal stream.
-If you print <code>\e]8;;file://feh/home/groves\e\\</code>, text you print after that will link to <code>/home/groves</code> on a host named &lsquo;feh&rsquo;.</p>
+Printing <code>\e]8;;file://feh/home/groves\e\\</code> starts a link to <code>/home/groves</code> on a host named &lsquo;feh&rsquo;.
+The terminal will know that text printed after that links there.</p>
 <blockquote>
 <p>Aside: <code>\e</code> is the <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C" target="_blank" rel="noopener">C escape sequence</a> for the <a href="https://en.wikipedia.org/wiki/Escape_character#ASCII_escape_character" target="_blank" rel="noopener">escape character</a> in ASCII.
 The escape character starts terminal escape sequences.

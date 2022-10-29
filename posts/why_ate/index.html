@@ -59,11 +59,11 @@ Then, in 2017, the authors of Gnome Terminal and iTerm2 added <a href="https://g
 In the intervening years <a href="https://sw.kovidgoyal.net/kitty/glossary/#term-hyperlinks" target="_blank" rel="noopener">many</a> <a href="https://wezfurlong.org/wezterm/hyperlinks.html" target="_blank" rel="noopener">other</a> <a href="https://github.com/microsoft/terminal/pull/7251" target="_blank" rel="noopener">excellent</a> <a href="https://github.com/alacritty/alacritty/pull/6139" target="_blank" rel="noopener">terminals</a> added support.</p>
 <p>That critical mass of terminals meant more applications can emit links.
 Your compiler or test runner or <a href="https://github.com/BurntSushi/ripgrep" target="_blank" rel="noopener">recursive grep</a> could link to a character in a line in a file they thought you might find interesting.
-I wanted to press one key in my editor to run my compiler or test runner in a separate terminal pane which then navigated to the first error if any.</p>
+I wanted to press one key in my editor to compile and test my code in a separate terminal pane and then navigate to the first error if there was one.</p>
 <p>I wrote <a href="https://github.com/groves/ate" target="_blank" rel="noopener">ate</a> to do that.
 Before we get into what ate does, let&rsquo;s talk about how terminal links work and make it possible.</p>
 <h1 id="terminal-hyperlinks">Terminal Hyperlinks <a href="#terminal-hyperlinks" class="anchor">#</a></h1><p>Like setting a color and many other terminal commands, links are started by printing an escape sequence to the terminal stream.
-Printing <code>\e]8;;file://feh/home/groves\e\\</code> starts a link to <code>/home/groves</code> on a host named &lsquo;feh&rsquo;.
+Printing <code>\e]8;;file://feh/home/groves\e\\</code> starts a link to <code>/home/groves</code> on a host named <code>feh</code>.
 The terminal will know that text printed after that links there.</p>
 <blockquote>
 <p>Aside: <code>\e</code> is the <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C" target="_blank" rel="noopener">C escape sequence</a> for the <a href="https://en.wikipedia.org/wiki/Escape_character#ASCII_escape_character" target="_blank" rel="noopener">escape character</a> in ASCII.
@@ -130,7 +130,7 @@ I wrote a <a href="https://github.com/groves/hyperer" target="_blank" rel="noope
 <p>We don&rsquo;t need to track the current file in cargo output, so the <a href="https://github.com/groves/hyperer/blob/dbf4044e6e3670631a940fc518876be2b0ba73d2/hyperer/hcargo.py#L14" target="_blank" rel="noopener">link insertion code</a> is straightforward enough to walk through here:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#177500"># Use regular expressions to match certain output from cargo</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#177500"># Match assertion failures that look eg</span>
+</span></span><span style="display:flex;"><span><span style="color:#177500"># Match assertion failures eg</span>
 </span></span><span style="display:flex;"><span><span style="color:#177500"># right: `0`&#39;, src/main.rs:1012:9</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">assert_pat</span> <span style="color:#000">=</span> <span style="color:#000">re</span><span style="color:#000">.</span><span style="color:#000">compile</span>(<span style="color:#c41a16">br</span><span style="color:#c41a16">&#39; +(?:left|right):.+ (.+):(\d+):(\d+)&#39;</span>)
 </span></span><span style="display:flex;"><span>

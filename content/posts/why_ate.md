@@ -31,7 +31,7 @@ In the intervening years [many][kitty hyperlinks] [other][wezterm hyperlinks] [e
 
 That critical mass of terminals meant more applications can emit links.
 Your compiler or test runner or [recursive grep][ripgrep] could link to a character in a line in a file they thought you might find interesting.
-I wanted to press one key in my editor to run my compiler or test runner in a separate terminal pane which then navigated to the first error if any.
+I wanted to press one key in my editor to compile and test my code in a separate terminal pane and then navigate to the first error if there was one.
 
 I wrote [ate] to do that.
 Before we get into what ate does, let's talk about how terminal links work and make it possible.
@@ -42,7 +42,7 @@ Before we get into what ate does, let's talk about how terminal links work and m
 Terminal Hyperlinks
 ===================
 Like setting a color and many other terminal commands, links are started by printing an escape sequence to the terminal stream.
-Printing `\e]8;;file://feh/home/groves\e\\` starts a link to `/home/groves` on a host named 'feh'.
+Printing `\e]8;;file://feh/home/groves\e\\` starts a link to `/home/groves` on a host named `feh`.
 The terminal will know that text printed after that links there.
 
 > Aside: `\e` is the [C escape sequence] for the [escape character] in ASCII.
@@ -168,7 +168,7 @@ We don't need to track the current file in cargo output, so the [link insertion 
 ```python
 # Use regular expressions to match certain output from cargo
 
-# Match assertion failures that look eg
+# Match assertion failures eg
 # right: `0`', src/main.rs:1012:9
 assert_pat = re.compile(br' +(?:left|right):.+ (.+):(\d+):(\d+)')
 

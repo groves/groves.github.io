@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elongated Hexagon Tiles</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #fafafa;
+        font-family: Arial, sans-serif;
+      }
+      canvas {
+        display: block;
+      }
+      .info {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+      .controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        width: 250px;
+      }
+      .tile-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        margin-bottom: 15px;
+      }
+      button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background: #f5f5f5;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      button:hover {
+        background: #e0e0e0;
+      }
+      .order-display {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 3px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .order-item {
+        padding: 2px 0;
+      }
+      .remove-btn {
+        width: 100%;
+        margin-top: 10px;
+        background: #ff6b6b;
+        color: white;
+      }
+      .remove-btn:hover {
+        background: #ff5252;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+      <h3>Tile Order Controls</h3>
+      <div class="tile-buttons">
+        <button onclick="addTile('vertical', 'WINTER_SKY')">
+          V - Winter Sky
+        </button>
+        <button onclick="addTile('angled', 'WINTER_SKY')">
+          A - Winter Sky
+        </button>
+        <button onclick="addTile('vertical', 'WHITE_HERON')">
+          V - White Heron
+        </button>
+        <button onclick="addTile('angled', 'WHITE_HERON')">
+          A - White Heron
+        </button>
+        <button onclick="addTile('vertical', 'ILLUME')">V - Illume</button>
+        <button onclick="addTile('angled', 'ILLUME')">A - Illume</button>
+      </div>
+      <button class="remove-btn" onclick="removeTile()">
+        Remove Last Tile
+      </button>
+      <h4>Current Order:</h4>
+      <div id="orderDisplay" class="order-display"></div>
+      <h4>Scale: <span id="scaleValue">0.020</span></h4>
+      <input
+        type="range"
+        id="scaleSlider"
+        min="0.01"
+        max="0.05"
+        step="0.001"
+        value="0.02"
+        style="width: 100%"
+      />
+      <h4>Tile Colors</h4>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: 5px;
+          margin-bottom: 10px;
+        "
+      >
+        <label>Winter Sky:</label>
+        <input type="color" id="winterSkyColor" value="#e8e8e8" />
+        <label>White Heron:</label>
+        <input type="color" id="whiteHeronColor" value="#f0f0ed" />
+        <label>Illume:</label>
+        <input type="color" id="illumeColor" value="#f0f0f0" />
+      </div>
+      <h4>Grout Color</h4>
+      <input type="color" id="groutColor" value="#fbfbfb" style="width: 100%" />
+    </div>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas to full window size
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Scale factor
+      let scale = 0.02; // 2% scale
+
+      // Hexagon dimensions at full size
+      const SIDE = 2125;
+      const LENGTH = 5750;
+      const WIDTH = 2125;
+
+      let groutColor = "#fbfbfb";
+      const groutWidth = 100;
+
+      // Color constants
+      let COLORS = {
+        WINTER_SKY: "#e8e8e8",
+        WHITE_HERON: "#f0f0ed",
+        ILLUME: "#f0f0f0",
+      };
+
+      // Hexagon class
+      class Hexagon {
+        constructor(x, y, rotation = 0, tileColor = "#f5f5f5") {
+          this.x = x;
+          this.y = y;
+          this.rotation = rotation;
+          this.tileColor = tileColor;
+        }
+
+        draw() {
+          ctx.save();
+          ctx.translate(this.x * scale, this.y * scale);
+          ctx.rotate(this.rotation);
+          ctx.scale(scale, scale);
+
+          // Calculate vertices
+          const halfWidth = WIDTH / 2;
+          const halfLength = LENGTH / 2;
+          const verticalProjection = Math.sqrt(
+            SIDE * SIDE - halfWidth * halfWidth,
+          );
+
+          ctx.beginPath();
+          ctx.moveTo(0, -halfLength);
+          ctx.lineTo(halfWidth, -halfLength + verticalProjection);
+          ctx.lineTo(halfWidth, halfLength - verticalProjection);
+          ctx.lineTo(0, halfLength);
+          ctx.lineTo(-halfWidth, halfLength - verticalProjection);
+          ctx.lineTo(-halfWidth, -halfLength + verticalProjection);
+
+          ctx.closePath();
+
+          ctx.fillStyle = this.tileColor;
+          ctx.fill();
+
+          ctx.strokeStyle = groutColor;
+          ctx.lineWidth = groutWidth;
+          ctx.stroke();
+
+          ctx.restore();
+        }
+      }
+
+      // Store all hexagons
+      const hexagons = [];
+      const verticalSpacing = LENGTH + SIDE;
+      const horizontalSpacing = WIDTH / 2;
+
+      // Initialize hexagon grid
+      function verticalGrid() {
+        const cols = Math.ceil(canvas.width / scale / horizontalSpacing) + 3;
+        const rows = Math.ceil(canvas.height / scale / verticalSpacing) + 3;
+
+        for (let col = -1; col < cols; col++) {
+          for (let row = -1; row < rows; row++) {
+            let x = col * horizontalSpacing;
+            let y = row * verticalSpacing;
+
+            if (col % 2 === 1) {
+              y += verticalSpacing / 2;
+            }
+
+            hexagons.push(new Hexagon(x, y));
+          }
+        }
+        return horizontalSpacing;
+      }
+
+      function angleDiagonal(xOff, yOff, color) {
+        let row = 0;
+        while (yOff * scale < canvas.height) {
+          hexagons.push(new Hexagon(xOff, yOff, Math.PI / 6, color));
+
+          xOff -= horizontalSpacing;
+          yOff += verticalSpacing / 2;
+          row++;
+        }
+        return xOff;
+      }
+
+      function verticalDiagonal(xOff, yOff, color) {
+        let row = 0;
+        while (yOff * scale < canvas.height) {
+          hexagons.push(new Hexagon(xOff, yOff, 0, color));
+          xOff -= horizontalSpacing;
+          yOff += verticalSpacing / 2;
+          row++;
+        }
+        return xOff;
+      }
+
+      const offsets = {
+        angled: {
+          angled: { x: 2900, y: -2900 },
+          vertical: { x: 2500, y: -1500 },
+        },
+        vertical: {
+          angled: { x: 2500, y: -1500 },
+          vertical: { x: WIDTH, y: 0 },
+        },
+      };
+
+      // Initialize hexagon grid
+      function angledLeaf() {
+        let startX = 0;
+        let startY = 0;
+
+        let offset = { angled: { x: 0, y: 0 }, vertical: { x: 0, y: 0 } };
+        let xOff = 0;
+        let yOff = 0;
+        let col = 0;
+        let finalX = 0;
+        let order = window.tileOrder || [
+          { type: "vertical", colorName: "ILLUME" },
+          { type: "angled", colorName: "WINTER_SKY" },
+          { type: "angled", colorName: "WHITE_HERON" },
+        ];
+        while (finalX * scale < canvas.width) {
+          let item = order[col % order.length];
+          let color = COLORS[item.colorName];
+          xOff += offset[item.type].x;
+          yOff += offset[item.type].y;
+          if (item.type == "vertical") {
+            finalX = verticalDiagonal(xOff, yOff, color);
+          } else {
+            finalX = angleDiagonal(xOff, yOff, color);
+          }
+          offset = offsets[item.type];
+          col++;
+        }
+      }
+
+      // Draw all hexagons
+      function draw() {
+        // Clear canvas
+        ctx.fillStyle = "#fafafa";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw all hexagons
+        hexagons.forEach((hex) => hex.draw());
+      }
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        draw();
+      });
+
+      // Initialize tile order
+      window.tileOrder = [
+        { type: "vertical", colorName: "ILLUME" },
+        { type: "angled", colorName: "WINTER_SKY" },
+        { type: "angled", colorName: "WHITE_HERON" },
+      ];
+
+      // Function to add a tile to the order
+      function addTile(type, colorName) {
+        window.tileOrder.push({ type: type, colorName: colorName });
+        updateDisplay();
+        redraw();
+      }
+
+      // Function to remove the last tile
+      function removeTile() {
+        if (window.tileOrder.length > 0) {
+          window.tileOrder.pop();
+          updateDisplay();
+          redraw();
+        }
+      }
+
+      // Function to update the order display
+      function updateDisplay() {
+        const display = document.getElementById("orderDisplay");
+        display.innerHTML = "";
+        window.tileOrder.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.className = "order-item";
+          div.textContent = `${index + 1}. ${item.type} - ${item.colorName}`;
+          display.appendChild(div);
+        });
+      }
+
+      // Function to redraw the canvas
+      function redraw() {
+        hexagons.length = 0; // Clear existing hexagons
+        angledLeaf();
+        draw();
+      }
+
+      // Scale slider handler
+      const scaleSlider = document.getElementById("scaleSlider");
+      const scaleValue = document.getElementById("scaleValue");
+
+      scaleSlider.addEventListener("input", function () {
+        scale = parseFloat(this.value);
+        scaleValue.textContent = scale.toFixed(3);
+        redraw();
+      });
+
+      // Color input handlers
+      const winterSkyColor = document.getElementById("winterSkyColor");
+      const whiteHeronColor = document.getElementById("whiteHeronColor");
+      const illumeColor = document.getElementById("illumeColor");
+      const groutColorInput = document.getElementById("groutColor");
+
+      winterSkyColor.addEventListener("input", function () {
+        COLORS.WINTER_SKY = this.value;
+        updateDisplay();
+        redraw();
+      });
+
+      whiteHeronColor.addEventListener("input", function () {
+        COLORS.WHITE_HERON = this.value;
+        updateDisplay();
+        redraw();
+      });
+
+      illumeColor.addEventListener("input", function () {
+        COLORS.ILLUME = this.value;
+        updateDisplay();
+        redraw();
+      });
+
+      groutColorInput.addEventListener("input", function () {
+        groutColor = this.value;
+        redraw();
+      });
+
+      // Initialize
+      updateDisplay();
+      angledLeaf();
+      draw();
+    </script>
+  </body>
+</html>

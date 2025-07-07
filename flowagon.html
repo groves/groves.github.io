@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hexagon Flower</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #fafafa;
+        font-family: Arial, sans-serif;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas to full window size
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Scale factor
+      let scale = 0.02; // 2% scale
+
+      // Hexagon dimensions at full size
+      const SIDE = 2125;
+      const LENGTH = 5750;
+      const WIDTH = 2125;
+      const GROUT = 125;
+
+      // Color constants
+      let COLORS = {
+        WINTER_SKY: "#e8e8e8",
+        WHITE_HERON: "#f0f0ed",
+        ILLUME: "#f0f0f0",
+      };
+
+      // Hexagon class
+      class Hexagon {
+        constructor(x, y, rotation = 0, tileColor = COLORS.WINTER_SKY) {
+          this.x = x;
+          this.y = y;
+          this.rotation = rotation;
+          this.tileColor = tileColor;
+        }
+
+        draw() {
+          ctx.save();
+          ctx.scale(scale, scale);
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+
+          // Calculate vertices
+          const halfWidth = WIDTH / 2;
+          const halfLength = LENGTH / 2;
+          const verticalProjection = Math.sqrt(
+            SIDE * SIDE - halfWidth * halfWidth,
+          );
+
+          ctx.beginPath();
+          ctx.moveTo(0, -halfLength);
+          ctx.lineTo(halfWidth, -halfLength + verticalProjection);
+          ctx.lineTo(halfWidth, halfLength - verticalProjection);
+          ctx.lineTo(0, halfLength);
+          ctx.lineTo(-halfWidth, halfLength - verticalProjection);
+          ctx.lineTo(-halfWidth, -halfLength + verticalProjection);
+
+          ctx.closePath();
+
+          ctx.fillStyle = this.tileColor;
+          ctx.fill();
+
+          let groutColor = "#fbfbfb";
+          const groutWidth = 125;
+
+          ctx.strokeStyle = groutColor;
+          ctx.lineWidth = groutWidth;
+          ctx.stroke();
+
+          ctx.restore();
+        }
+      }
+
+      // Store all hexagons
+      const hexagons = [];
+
+      const CENTER_ANGLES = [
+        Math.PI / 6,
+        Math.PI / 2,
+        (Math.PI * 5) / 6,
+        (Math.PI * 7) / 6,
+        (Math.PI * 3) / 2,
+        (Math.PI * 11) / 6,
+      ];
+      const ONE_OUT_ANGLES = [
+        0,
+        Math.PI / 3,
+        (Math.PI * 2) / 3,
+        Math.PI,
+        (Math.PI * 4) / 3,
+        (Math.PI * 5) / 3,
+      ];
+
+      let SCALED_WIDTH = window.innerWidth / scale;
+      let SCALED_HEIGHT = window.innerHeight / scale;
+
+      const WALK_PERP = (SIDE + GROUT) / 2;
+      const WALK_PARALLEL = SIDE * 2;
+
+      function walk(angle, x, y, xStep, yStep, w, colorFn = null, row = 0) {
+        while (x >= 0 && x < SCALED_WIDTH && y >= 0 && y < SCALED_HEIGHT) {
+          const color = colorFn ? colorFn(row) : COLORS.WINTER_SKY;
+          hexagons.push(new Hexagon(x, y, angle, color));
+          walk(
+            angle,
+            x + w.clockwise.x + w.parallel.x,
+            y + w.clockwise.y + w.parallel.y,
+            xStep,
+            yStep,
+            w,
+            colorFn,
+            row + 1,
+          );
+          walk(
+            angle,
+            x + w.counter.x + w.parallel.x,
+            y + w.counter.y + w.parallel.y,
+            xStep,
+            yStep,
+            w,
+            colorFn,
+            row + 1,
+          );
+          x += xStep;
+          y += yStep;
+          row += 2;
+        }
+      }
+
+      function startWalk(angle, startX, startY, startStep, colorFn = null) {
+        const xRun = Math.cos(angle);
+        const yRun = Math.sin(angle);
+
+        let x = startX + xRun * startStep;
+        let y = startY + yRun * startStep;
+
+        const drawStep = LENGTH + SIDE + GROUT * 4;
+        const xStep = xRun * drawStep;
+        const yStep = yRun * drawStep;
+        const drawAngle = (angle + Math.PI / 2) % (2 * Math.PI);
+
+        walk(
+          drawAngle,
+          x,
+          y,
+          xStep,
+          yStep,
+          {
+            clockwise: {
+              x: -Math.sin(angle) * WALK_PERP,
+              y: Math.cos(angle) * WALK_PERP,
+            },
+            counter: {
+              x: Math.sin(angle) * WALK_PERP,
+              y: -Math.cos(angle) * WALK_PERP,
+            },
+            parallel: { x: xRun * WALK_PARALLEL, y: yRun * WALK_PARALLEL },
+          },
+          colorFn,
+        );
+      }
+      function flower() {
+        const startX = SCALED_WIDTH / 2;
+        const startY = SCALED_HEIGHT / 2;
+
+        const CENTER_COLORS = (row) => {
+          const colors = [COLORS.ILLUME, COLORS.WHITE_HERON, COLORS.WINTER_SKY];
+          return colors[row % colors.length];
+        };
+
+        CENTER_ANGLES.forEach((angle) =>
+          startWalk(angle, startX, startY, LENGTH / 2 + GROUT, CENTER_COLORS),
+        );
+        const ONE_OUT_COLORS = (row) => {
+          const colors = [COLORS.WINTER_SKY, COLORS.WHITE_HERON, COLORS.ILLUME];
+          return colors[row % colors.length];
+        };
+        ONE_OUT_ANGLES.forEach((angle) =>
+          startWalk(
+            angle,
+            startX,
+            startY,
+            LENGTH / 2 + SIDE + GROUT,
+            CENTER_COLORS,
+          ),
+        );
+      }
+
+      function draw() {
+        ctx.fillStyle = "#fdfdfd";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        hexagons.length = 0; // Clear existing hexagons
+        flower();
+        hexagons.forEach((hex) => hex.draw());
+      }
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let SCALED_WIDTH = window.innerWidth / scale;
+        let SCALED_HEIGHT = window.innerHeight / scale;
+
+        draw();
+      });
+
+      draw();
+    </script>
+  </body>
+</html>

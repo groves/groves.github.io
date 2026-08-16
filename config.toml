@@ -1,5 +1,5 @@
 baseURL = 'https://sevorg.org'
-languageCode = 'en-us'
+locale = 'en-us'
 theme = 'mini'
 title = 'This is Being Known'
 

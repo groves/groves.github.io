@@ -17,11 +17,11 @@ The increase in capability of software we can build today compared to 40 years a
 
 ## Helping Others Help You
 
-Inside a company, sharing infrastructure and underlying libraries allows platform teams to make life easier for application teams. Everyone deploying to Kubernetes lets the IDE team put all their effort into making it great, and the more people run React and Fastapi, the more the AppSec team can build tools to make those libraries safe by default.
+Inside a company, sharing infrastructure and underlying libraries allows platform teams to make life easier for application teams. Everyone deploying to Kubernetes lets a platform team put all their effort into making it great, and the more people run React and FastAPI, the more an AppSec team can build tools to make those libraries safe by default.
 
 ## Consistency
 
-When we want to present a unified face, either in a UI or in an implementation of tokenization, sharing the code to do it can make that easier.
+When we want to present a unified face, either in a UI or in an implementation of an algorithm, sharing the code to do it can make that easier.
 
 # Sharing Drawbacks
 
@@ -75,7 +75,7 @@ For things we want to stay in sync across teams like UI styling, that it's harde
 
 ## Shares Determine Savings
 
-The implementation savings in sharing come from the number of times something is reused minus the additional cost of making it sharable. If something is only going to be reused once, it's way less likely to pay off than if it's going to be reused 10 times.
+The implementation savings in sharing come from the number of times something is reused minus the additional cost of making it shareable. If something is only going to be reused once, it's way less likely to pay off than if it's going to be reused 10 times.
 
 ## Divergence Determines Cost
 

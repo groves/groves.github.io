@@ -3,10 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sevorg.org/draft/posts/</loc>
-    <lastmod>2022-10-10T15:23:07-04:00</lastmod>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sevorg.org/draft/posts/sandboxes_and_the_beach/</loc>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sevorg.org/draft/</loc>
-    <lastmod>2022-10-10T15:23:07-04:00</lastmod>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sevorg.org/draft/posts/code_sharing/</loc>
+    <lastmod>2023-05-07T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sevorg.org/draft/posts/coot/</loc>
+    <lastmod>2023-03-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sevorg.org/draft/posts/why_ate/</loc>
     <lastmod>2022-10-10T15:23:07-04:00</lastmod>
@@ -21,7 +30,6 @@
     <lastmod>2021-10-03T11:36:03-04:00</lastmod>
   </url><url>
     <loc>https://sevorg.org/draft/about/</loc>
-    <priority>0</priority>
   </url><url>
     <loc>https://sevorg.org/draft/categories/</loc>
   </url><url>

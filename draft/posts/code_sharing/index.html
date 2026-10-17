@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Sharing is Invaluable, Sharing is Expensive | This is Being Known</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="How to decide when sharing is caring">
+<meta name="generator" content="Hugo 0.164.0">
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/draft/css/style.css">
+
+<link rel="shortcut icon" href="/draft/images/favicon.ico" type="image/x-icon" />
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	<a href="/draft/">Home</a>
+	<a href="/draft/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Sharing is Invaluable, Sharing is Expensive</h1>
+
+    <div class="tip">
+        <time datetime="2023-05-07 00:00:00 &#43;0000 UTC">May 7, 2023</time>
+    </div>
+
+    
+    
+
+
+    <div class="content">
+      <p>Tools for sharing code fill the software world. Package managers, mono and polyrepos, semantic versioning, and on and on, a good portion of what we talk about in developing software is how to share. Because of the value gained from shared code and the ubiquity of sharing tools, it can feel like any code that can be shared should be shared. There are tradeoffs to sharing though. That makes the answer to the question of if you should share &ldquo;it depends&rdquo;, as with every other question in software development.</p>
+<h1 id="sharing-benefits">Sharing Benefits <a href="#sharing-benefits" class="anchor">#</a></h1><p>Sharing is so well understood to be great in software that it feels foolish to call out reasons why. We do that here because calling out the specific places where its most powerful can help in deciding if a particular case will use that power.</p>
+<h2 id="the-shoulders-of-giants">The Shoulders of Giants <a href="#the-shoulders-of-giants" class="anchor">#</a></h2><p>The increase in capability of software we can build today compared to 40 years ago can be attributed as much to shared code as it can to Moore&rsquo;s law. The enormous cost of building an operating system or database or programming language can be amortized over an even more enormous number of users continuously making the baseline more capable.</p>
+<h2 id="helping-others-help-you">Helping Others Help You <a href="#helping-others-help-you" class="anchor">#</a></h2><p>Inside a company, sharing infrastructure and underlying libraries allows platform teams to make life easier for application teams. Everyone deploying to Kubernetes lets the IDE team put all their effort into making it great, and the more people run React and FastAPI, the more the AppSec team can build tools to make those libraries safe by default.</p>
+<h2 id="consistency">Consistency <a href="#consistency" class="anchor">#</a></h2><p>When we want to present a unified face, either in a UI or in an implementation of tokenization, sharing the code to do it can make that easier.</p>
+<h1 id="sharing-drawbacks">Sharing Drawbacks <a href="#sharing-drawbacks" class="anchor">#</a></h1><h2 id="generic-is-more-complicated-than-specific">Generic is More Complicated Than Specific <a href="#generic-is-more-complicated-than-specific" class="anchor">#</a></h2><p>Sharing something makes it support multiple use cases. Each additional use case adds complications to the code, more so with more difference between the uses.</p>
+<p>This is not a one time cost. Each change in the future requires the author to consider all the use cases. If other users stop using the shared functionality, the cost to make it generic was wasted.</p>
+<h2 id="changing-needs-coordination">Changing Needs Coordination <a href="#changing-needs-coordination" class="anchor">#</a></h2><h3 id="aka-mo-versions-mo-problems">AKA Mo Versions Mo Problems <a href="#aka-mo-versions-mo-problems" class="anchor">#</a></h3><p>When changing shared code, the author must test that code with each user to keep from breaking them. If they want to make a breaking change, they have to bump a version and leave work for the user to update later. Even bumping the version of dependencies in shared code can be breaking, leading to work cascading across teams.</p>
+<h2 id="indirect-is-harder-than-direct">Indirect is Harder than Direct <a href="#indirect-is-harder-than-direct" class="anchor">#</a></h2><p>Using shared code means that your code goes through a reference or package to get to the shared code. That indirection makes many things harder: viewing the code, grepping across the codebase, editing it, updating it.</p>
+<h2 id="sharing-adds-tools">Sharing Adds Tools <a href="#sharing-adds-tools" class="anchor">#</a></h2><p>To publish, use, or edit shared code, you use tools like package managers and repositories. Adding shared code that your team works on means everyone must learn these tools.</p>
+<h1 id="considerations">Considerations <a href="#considerations" class="anchor">#</a></h1><p>Given the above benefits and drawbacks, here are some things to consider when deciding when and how to share.</p>
+<h2 id="default-to-shared-for-anything-below-your-application">Default to Shared for Anything Below Your Application <a href="#default-to-shared-for-anything-below-your-application" class="anchor">#</a></h2><p>For things that are below your application code and don&rsquo;t truly affect your product&rsquo;s use cases, default to shared to help others help you. Have a strong, product driven reason to use a database other than Postgres or a backend language other than Python. Even with that, think thrice.</p>
+<h2 id="the-rate-of-change-is-a-factor-of-the-cost-of-sharing">The Rate of Change is a Factor of the Cost of Sharing <a href="#the-rate-of-change-is-a-factor-of-the-cost-of-sharing" class="anchor">#</a></h2><p>In the heat of product discovery the use cases we&rsquo;re supporting change as often as the code itself. Attempting to share across two products that are figuring out what they want to be is like trying to stand with feet split between the hoods of two speeding cars. Even if the drivers are well coordinated, you&rsquo;re going to have to do some fancy footwork. If one driver takes a left, good luck!</p>
+<p>That also means that if one product has built something that a second product might use, factoring that out into a shared library can be far cheaper if it&rsquo;s done when the first product is stable.</p>
+<h2 id="conways-law-rules-everything-around-me">Conway&rsquo;s law Rules Everything Around Me <a href="#conways-law-rules-everything-around-me" class="anchor">#</a></h2><p>Coordination is another major factor in the cost of sharing. A single team is already coordinating internally. The cost of sharing across products or services owned by one team doesn&rsquo;t include learning and keeping up to date on the use cases of other teams.</p>
+<h2 id="if-sharing-is-expensive-giving-is-free">If Sharing is Expensive, Giving is Free <a href="#if-sharing-is-expensive-giving-is-free" class="anchor">#</a></h2><p>The cost of making things generic and coordination comes from using the same code in multiple places. <code>cp -r</code> gives another team your code without incurring any of those costs. Of course, in addition to removing the costs of sharing, giving also removes any of the ongoing benefits of sharing.</p>
+<p>However if the code significantly diverges after the copy, there wouldn&rsquo;t have been any benefits anyway. A powerful way to start sharing can be to make a copy and then pull the parts that didn&rsquo;t diverge up into a shared library.</p>
+<h2 id="the-friction-of-sharing-encourages-convergence">The Friction of Sharing Encourages Convergence <a href="#the-friction-of-sharing-encourages-convergence" class="anchor">#</a></h2><p>For things we want to stay in sync across teams like UI styling, that it&rsquo;s harder to change shared code can be a feature. It both pushes to have as little in those shared layers as possible and incents teams to use what&rsquo;s in there as is more than if they could easily change it.</p>
+<h2 id="shares-determine-savings">Shares Determine Savings <a href="#shares-determine-savings" class="anchor">#</a></h2><p>The implementation savings in sharing come from the number of times something is reused minus the additional cost of making it shareable. If something is only going to be reused once, it&rsquo;s way less likely to pay off than if it&rsquo;s going to be reused 10 times.</p>
+<h2 id="divergence-determines-cost">Divergence Determines Cost <a href="#divergence-determines-cost" class="anchor">#</a></h2><p>The more simple and similar the use cases of a library are, the easier it is to make generic. If each user needs to configure it differently, that difference in use multiplies the difficulty of coming up with commonalities.</p>
+<h1 id="how-to-decide">How to Decide <a href="#how-to-decide" class="anchor">#</a></h1><p>Those considerations lead to these factors to consider:</p>
+<ul>
+<li>How well understood is the use case i.e. what is the rate of change likely to be</li>
+<li>Is there a clear owner that has a grasp of all the use cases i.e. are we attempting to violate Conway&rsquo;s Law</li>
+<li>Do we need future updates, or could we just start from the current code and fork i.e. can we give freely instead of sharing expensively?</li>
+<li>How many uses will there be of the shared functionality?</li>
+<li>Are those uses similar enough to truly share?</li>
+</ul>
+
+    </div>
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+</footer>
+
+
+
+  </body>
+</html>
